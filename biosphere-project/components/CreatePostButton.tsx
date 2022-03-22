@@ -1,20 +1,21 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Pressable } from 'react-native';
 
 interface Props {
   setIsPressed: React.Dispatch<React.SetStateAction<any>>;}
 
 const CreatePostButton: React.FC<Props> = ({setIsPressed}) => {
 
-  const onPress = () => {
-
+  const overlayButton = (e) => {
+    console.log(e)
+    setIsPressed(true);
   }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={onPress}>
+      <Pressable style={styles.button} onPress={(e) => overlayButton(e)}>
         <Text style={{ fontSize: 20, color: '#fff' }}>Pick a photo</Text>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 };

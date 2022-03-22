@@ -17,6 +17,8 @@ const MainMap: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isPressed, setIsPressed] = useState(false);
 
+console.log(isPressed, "Map.20")
+
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
@@ -42,7 +44,8 @@ const MainMap: React.FC = () => {
         <Text>Loading...</Text>
       </View>
     );
-  return (
+    if (isPressed ) {
+      return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
@@ -63,7 +66,29 @@ const MainMap: React.FC = () => {
       <CreatePostButton setIsPressed={setIsPressed}/>
     </View>
   );
+    }
+    return (
+      <View style={styles.container}>
+      <MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        showsUserLocation={true}
+        followsUserLocation={true}
+        showsCompass={true}
+        userLocationUpdateInterval={60000}
+        userLocationFastestInterval={60000}
+      >
+      </MapView>
+      <CreatePostButton setIsPressed={setIsPressed}/>
+    </View>
+  );  
 };
+
 
 const styles = StyleSheet.create({
   container: {
