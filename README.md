@@ -1,7 +1,9 @@
 # biosphere
-Final group project for Northcoders
----
+
+## Final group project for Northcoders
+
 SETUP:
+
 ```
 //Install initial react expo cli
 
@@ -33,6 +35,8 @@ npm install typescript --save-dev
 npm install --save-dev jest
 
 Have established main branch as requiring all admins to make pull requests, and to have deletions accepted once committed.
+
+API_KEY - create an API_KEY.ts file and export a variable labeled API_KEY and make it equal the api key. Also create a .env file and write API_KEY=<your api key here>. request api key from frontend.
 
 ```
 
