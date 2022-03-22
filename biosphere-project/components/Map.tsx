@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import * as React from 'react';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
 import CreatePostButton from './CreatePostButton';
+import CreatePostOverlay from './CreatePostOverlay'
 
 interface LocationState {
   latitude: number;
@@ -14,6 +15,7 @@ interface LocationState {
 const MainMap: React.FC = () => {
   const [location, setLocation] = useState<LocationState | {}>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isPressed, setIsPressed] = useState(false);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -56,8 +58,9 @@ const MainMap: React.FC = () => {
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
       >
-        <CreatePostButton />
       </MapView>
+      <CreatePostOverlay/>
+      <CreatePostButton setIsPressed={setIsPressed}/>
     </View>
   );
 };

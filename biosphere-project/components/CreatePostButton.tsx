@@ -1,10 +1,18 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-const CreatePostButton: React.FC = () => {
+interface Props {
+  setIsPressed: React.Dispatch<React.SetStateAction<any>>;}
+
+const CreatePostButton: React.FC<Props> = ({setIsPressed}) => {
+
+  const onPress = () => {
+
+  }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{ backgroundColor: 'blue' }}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={{ fontSize: 20, color: '#fff' }}>Pick a photo</Text>
       </TouchableOpacity>
     </View>
@@ -29,6 +37,17 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     marginBottom: 10,
   },
+  button: {
+    width: 100,
+    height: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 100,
+    backgroundColor: 'red',
+    position: 'absolute',
+    bottom: 50,
+  }
 });
 
 export default CreatePostButton;
