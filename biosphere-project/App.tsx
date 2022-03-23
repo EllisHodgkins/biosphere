@@ -1,11 +1,23 @@
-import { View } from 'react-native';
-import AppNav from './components/App.navigator';
-import { Provider as PaperProvider } from 'react-native-paper';
+import { StatusBar } from 'expo-status-bar';
+import { NativeModules, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './hooks/useColorScheme';
+import Navigation from './navigation';
 
 export default function App() {
+  const isLoadingComplete = useCachedResources();
+  const colorScheme = useColorScheme();
+
+  if (!isLoadingComplete) {
+    return null;
+  } else {
   return (
-    <PaperProvider>
-      <AppNav />
-    </PaperProvider>
+    <SafeAreaProvider>
+    <Navigation colorScheme={colorScheme} />
+    <StatusBar />
+  </SafeAreaProvider>
   );
+  }
 }

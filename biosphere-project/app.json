@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "biosphere-project",
+    "scheme": "https",
     "slug": "biosphere-project",
     "version": "1.0.0",
     "orientation": "portrait",

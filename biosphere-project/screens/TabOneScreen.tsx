@@ -1,11 +1,9 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { Text, View, ToastAndroid, StyleSheet } from 'react-native';
 import { Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import * as React from 'react';
 import * as Location from 'expo-location';
 import { useState, useEffect } from 'react';
-import CreatePostButton from './CreatePostButton';
-import CreatePostOverlay from './CreatePostOverlay';
 
 interface LocationState {
   latitude: number;
@@ -15,23 +13,25 @@ interface LocationState {
 const MainMap: React.FC = () => {
   const [location, setLocation] = useState<LocationState | {}>({});
   const [isLoading, setIsLoading] = useState(true);
-  const [isPressed, setIsPressed] = useState(false);
-
-  console.log(isPressed, 'Map.20');
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
         if (status !== 'granted') {
-          console.log('error - this is not working');
+          ToastAndroid.show(
+            'Location permissions required to use this app.',
+            ToastAndroid.LONG
+          );
           return;
         }
 
         return Location.getCurrentPositionAsync({});
       })
       .then((location) => {
-        setLocation(location.coords);
-        setIsLoading(false);
+        if (location) {
+          setLocation(location.coords);
+          setIsLoading(false);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -44,28 +44,7 @@ const MainMap: React.FC = () => {
         <Text>Loading...</Text>
       </View>
     );
-  if (isPressed) {
-    return (
-      <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: location.latitude,
-            longitude: location.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          showsUserLocation={true}
-          followsUserLocation={true}
-          showsCompass={true}
-          userLocationUpdateInterval={60000}
-          userLocationFastestInterval={60000}
-        ></MapView>
-        <CreatePostOverlay />
-        <CreatePostButton setIsPressed={setIsPressed} />
-      </View>
-    );
-  }
+
   return (
     <View style={styles.container}>
       <MapView
@@ -82,7 +61,6 @@ const MainMap: React.FC = () => {
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
       ></MapView>
-      <CreatePostButton setIsPressed={setIsPressed} />
     </View>
   );
 };
@@ -96,7 +74,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 200,
+    height: Dimensions.get('window').height,
     zIndex: 0,
     elevation: 0,
   },
