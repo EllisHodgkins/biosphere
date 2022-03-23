@@ -1,21 +1,26 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View, Pressable } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Pressable,
+  Button,
+} from 'react-native';
 
 interface Props {
-  setIsPressed: React.Dispatch<React.SetStateAction<any>>;}
+  setIsPressed: React.Dispatch<React.SetStateAction<any>>;
+}
 
-const CreatePostButton: React.FC<Props> = ({setIsPressed}) => {
-
-  const overlayButton = (e) => {
-    console.log(e)
+const CreatePostButton: React.FC<Props> = ({ setIsPressed }) => {
+  const overlayButton = () => {
     setIsPressed(true);
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <Pressable style={styles.button} onPress={(e) => overlayButton(e)}>
-        <Text style={{ fontSize: 20, color: '#fff' }}>Pick a photo</Text>
-      </Pressable>
+      <Button title="Post" onPress={overlayButton} />
     </View>
   );
 };
@@ -26,6 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    zIndex: 1,
+    elevation: 1,
   },
   logo: {
     width: 305,
@@ -48,7 +55,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     position: 'absolute',
     bottom: 50,
-  }
+  },
 });
 
 export default CreatePostButton;
