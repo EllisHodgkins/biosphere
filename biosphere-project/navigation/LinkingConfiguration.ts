@@ -30,12 +30,16 @@ const linking: LinkingOptions<RootStackParamList> = {
               TabThreeScreen: 'three',
             },
           },
+        },
+      },
+      Pages : {
+        screens: {
           UploadPhoto: {
             screens: {
-              TabThreeScreen: 'UploadPhoto',
-            },
-          },
-        },
+              TabOneScreen: 'one',
+            }
+          }
+        }
       },
       Modal: 'modal',
       NotFound: '*',

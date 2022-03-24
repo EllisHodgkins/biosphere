@@ -45,16 +45,12 @@ const TakePhoto: React.FC<Props> = ({
         })
         .finally(() => {
           setCameraVisible(false);
-          navigation.goBack();
+          navigation.navigate('Pages');
         });
     }
   }, [cameraVisible]);
 
-  return (
-    <View>
-      <Text>Loading camera...</Text>
-    </View>
-  );
+  return (<></>)
 };
 
 export default TakePhoto;
