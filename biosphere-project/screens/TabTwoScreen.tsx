@@ -9,49 +9,52 @@ interface Props {
   setCameraVisible: Function;
 }
 
-const TakePhoto: React.FC<Props> = ({ navigation, cameraVisible, setCameraVisible }) => {
+const TakePhoto: React.FC<Props> = ({
+  navigation,
+  cameraVisible,
+  setCameraVisible,
+}) => {
   const [image, setImage] = useState({});
-  // const [toggle, setToggle] = useState(clicked);
-// console.log(clicked, "before")
-// clicked = 5
-console.log(cameraVisible, "after")
 
   useEffect(() => {
     if (cameraVisible) {
-    ImagePicker.requestCameraPermissionsAsync()
-      .then((permissionResponse) => {
-        if (!permissionResponse) {
-          ToastAndroid.show(
-            'Please allow camera permissions in settings',
-            ToastAndroid.LONG
-          );
-          return { cancelled: true };
-        }
-        return ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [1, 1],
-          quality: 1,
-          base64: true,
-        });
-      })
-      .then((result) => {
-        if (!result.cancelled) {
-          setImage(result);
+      ImagePicker.requestCameraPermissionsAsync()
+        .then((permissionResponse) => {
+          if (!permissionResponse) {
+            ToastAndroid.show(
+              'Please allow camera permissions in settings',
+              ToastAndroid.LONG
+            );
+            return { cancelled: true };
+          }
+          return ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+            base64: true,
+          });
+        })
+        .then((result) => {
+          if (!result.cancelled) {
+            setImage(result);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setCameraVisible(false);
           navigation.goBack();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setCameraVisible(false)
-        navigation.goBack();
-      })
+        });
     }
   }, [cameraVisible]);
 
-  return <View><Text>Loading camera...</Text></View>;
+  return (
+    <View>
+      <Text>Loading camera...</Text>
+    </View>
+  );
 };
 
 export default TakePhoto;

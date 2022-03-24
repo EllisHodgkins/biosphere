@@ -1,29 +1,60 @@
-import { StyleSheet } from 'react-native';
+import { ToastAndroid } from 'react-native';
+import { Text, View } from '../components/Themed';
+import * as ImagePicker from 'expo-image-picker';
+import { useEffect, useState } from 'react';
 
-import { Text, View } from 'react-native';
-
-export default function TabThreeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab Two</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-    </View>
-  );
+interface Props {
+  navigation: any;
+  libraryVisible: boolean;
+  setLibraryVisible: Function;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+const TakePhoto: React.FC<Props> = ({
+  navigation,
+  libraryVisible,
+  setLibraryVisible,
+}) => {
+  const [image, setImage] = useState({});
+
+  useEffect(() => {
+    if (libraryVisible) {
+      ImagePicker.requestMediaLibraryPermissionsAsync()
+        .then((permissionResult) => {
+          if (!permissionResult.granted) {
+            ToastAndroid.show(
+              'Please allow gallery permissions in settings',
+              ToastAndroid.LONG
+            );
+            return { cancelled: true };
+          }
+          return ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1,
+            base64: true,
+          });
+        })
+        .then((result) => {
+          if (!result.cancelled) {
+            setImage(result);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLibraryVisible(false);
+          navigation.goBack();
+        });
+    }
+  }, [libraryVisible]);
+
+  return (
+    <View>
+      <Text>Loading camera...</Text>
+    </View>
+  );
+};
+
+export default TakePhoto;
