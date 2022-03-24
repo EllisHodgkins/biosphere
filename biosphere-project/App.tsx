@@ -1,77 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native';
-import { Dimensions } from 'react-native';
-import MapView from 'react-native-maps';
-import * as React from 'react';
-import * as Location from 'expo-location';
-import { useState, useEffect, useRef } from 'react';
+import { StatusBar } from 'expo-status-bar';
+import { NativeModules, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-interface LocationState {
-  latitude: number;
-  longitude: number;
-}
+import useCachedResources from './hooks/useCachedResources';
+import useColorScheme from './hooks/useColorScheme';
+import Navigation from './navigation';
 
 export default function App() {
-  const [location, setLocation] = useState<LocationState | {}>({});
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoadingComplete = useCachedResources();
+  const colorScheme = useColorScheme();
 
-  console.log(location, 'state');
-
-  useEffect(() => {
-
-    Location.requestForegroundPermissionsAsync()
-      .then(({ status }) => {
-        if (status !== 'granted') {
-          console.log('error - this is not working');
-          return;
-        }
-
-        return Location.getCurrentPositionAsync({});
-      })
-      .then((location) => {
-        // console.log(location);
-        setLocation(location.coords);
-        setIsLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  if (isLoading)
-    return (
-      <View>
-        <Text>Loading...</Text>
-      </View>
-    );
+  if (!isLoadingComplete) {
+    return null;
+  } else {
   return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        showsCompass={true}
-        userLocationUpdateInterval={60000}
-        userLocationFastestInterval={60000}
-      />
-    </View>
+    <SafeAreaProvider>
+    <Navigation colorScheme={colorScheme} />
+    <StatusBar />
+  </SafeAreaProvider>
   );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-  },
-});
