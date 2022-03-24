@@ -5,12 +5,19 @@ import { useEffect, useState } from 'react';
 
 interface Props {
   navigation: any;
+  cameraVisible: boolean;
+  setCameraVisible: Function;
 }
 
-const TakePhoto: React.FC<Props> = ({ navigation }) => {
+const TakePhoto: React.FC<Props> = ({ navigation, cameraVisible, setCameraVisible }) => {
   const [image, setImage] = useState({});
+  // const [toggle, setToggle] = useState(clicked);
+// console.log(clicked, "before")
+// clicked = 5
+console.log(cameraVisible, "after")
 
   useEffect(() => {
+    if (cameraVisible) {
     ImagePicker.requestCameraPermissionsAsync()
       .then((permissionResponse) => {
         if (!permissionResponse) {
@@ -36,9 +43,15 @@ const TakePhoto: React.FC<Props> = ({ navigation }) => {
       })
       .catch((err) => {
         console.log(err);
-      });
-  }, []);
-  return <></>;
+      })
+      .finally(() => {
+        setCameraVisible(false)
+        navigation.goBack();
+      })
+    }
+  }, [cameraVisible]);
+
+  return <View><Text>Loading camera...</Text></View>;
 };
 
 export default TakePhoto;

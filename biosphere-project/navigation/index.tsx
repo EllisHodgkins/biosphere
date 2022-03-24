@@ -4,6 +4,8 @@
  *
  */
 
+import { useState } from "react";
+
 //Icons
 import { FontAwesome, MaterialIcons, Entypo } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -85,6 +87,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const [cameraVisible, setCameraVisible] = useState(false)
 
   return (
     <BottomTab.Navigator
@@ -112,12 +115,17 @@ function BottomTabNavigator() {
 
       <BottomTab.Screen
         name="TabTwo"
-        component={TabTwoScreen}
+        // component={() => <TabTwoScreen clicked={1}/>}
         options={{
           title: "Take a photo",
           tabBarIcon: ({ color }) => <Entypo name="camera" size={24} color={ color } />,
         }}
-      />
+        listeners={{
+          tabPress: () => {setCameraVisible(true)}
+        }}
+      >
+        {(props) => <TabTwoScreen {...props} cameraVisible={cameraVisible} setCameraVisible={setCameraVisible}/>}
+      </BottomTab.Screen>
 
 <BottomTab.Screen
         name="TabThree"
