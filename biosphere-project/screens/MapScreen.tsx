@@ -19,21 +19,11 @@ interface LocationState {
 
 interface MapProps {
   navigation: any;
-  route: object;
-  image?: object;
 }
 
-const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
+const MainMap: React.FC<MapProps> = ({ navigation }) => {
   const [location, setLocation] = useState<LocationState | {}>({});
   const [isLoading, setIsLoading] = useState(true);
-  const [photo, setPhoto] = useState('');
-  
-
-  useEffect(() => {
-    if (route.params) {
-      setPhoto(`data:image/jpg;base64,${route.params.image.base64}`);
-    }
-  }, [route]);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -83,10 +73,10 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
         userLocationFastestInterval={60000}
       ></MapView>
       <ScrollView>
-        <Image
-          style={{ flex: 1, height: 350, width: 350 }}
-          source={{ uri: photo }}
-        />
+        <Button
+          title="button"
+          onPress={() => navigation.navigate('Modal')}
+        ></Button>
       </ScrollView>
     </View>
   );

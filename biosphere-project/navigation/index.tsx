@@ -63,7 +63,6 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -81,7 +80,22 @@ function RootNavigator() {
         component={NativeStackNavigator}
       /> */}
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen
+          name="Modal"
+          component={ModalScreen}
+          options={({ navigation }) => ({
+            title: 'Upload',
+
+            //   headerLeft: () => (
+            //     <Pressable
+            //       onPress={() => navigation.navigate('Root')}
+            //       style={({ pressed }) => ({
+            //         opacity: pressed ? 0.5 : 1,
+            //       })}
+            //     />
+            //   ),
+          })}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );

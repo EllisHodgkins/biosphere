@@ -5,20 +5,17 @@ import { Text, View } from '../components/Themed';
 import { RootStackScreenProps } from '../types';
 
 export default function UploadPhotoScreen({ navigation, route }) {
-  console.log(route, '1')
   return (
-
     <View style={styles.container}>
       <Button
         title={'Back'}
         onPress={() =>
-          navigation.setParams({test: true})
-          &
-          navigation.navigate('Root', { test: true },
-          { type: 'navigation',
-            screen: 'CameraScreenPage',
-            params: true
-          })
+          navigation.setParams({ test: true }) &
+          navigation.navigate(
+            'Root',
+            { test: true },
+            { type: 'navigation', screen: 'CameraScreenPage', params: true }
+          )
         }
       />
       <Text style={styles.title}>Photo taken</Text>

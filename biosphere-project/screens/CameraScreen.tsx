@@ -44,13 +44,9 @@ const TakePhoto: React.FC<Props> = ({
           });
         })
         .then((result) => {
-          console.log(result);
           if (!result.cancelled) {
-            navigation.navigate('Root', {
-              screen: 'MapPage',
-              params: {
-                image: result,
-              },
+            navigation.navigate('Modal', {
+              params: result,
             });
           }
         })
@@ -59,9 +55,7 @@ const TakePhoto: React.FC<Props> = ({
         })
         .finally(() => {
           setCameraVisible(false);
-          navigation.navigate('Root', {
-            screen: 'MapPage',
-          });
+          navigation.navigate('Modal');
         });
     }
   }, [cameraVisible]);
