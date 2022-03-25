@@ -16,7 +16,8 @@ import {
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
-import { createNativeStackNavigator, headerBackButton } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HeaderBackButton } from '@react-navigation/elements'
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
@@ -98,15 +99,15 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="MapPage"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
+        name="MapPage"
         component={MapScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        options={({ navigation }: RootTabScreenProps<'MapPage'>) => ({
           title: 'Map',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="map-marked" size={24} color={color} />
@@ -124,8 +125,9 @@ function BottomTabNavigator() {
       />
 
       <BottomTab.Screen
-        name="TabTwo"
+        name="CameraPage"
         // component={() => <CameraScreen clicked={1}/>}
+        initialParams={ { test: false} }
         options={{
           title: 'Take a photo',
           tabBarIcon: ({ color }) => (
@@ -148,7 +150,7 @@ function BottomTabNavigator() {
       </BottomTab.Screen>
 
       <BottomTab.Screen
-        name="TabThree"
+        name="LibraryPage"
         options={{
           title: 'Choose a photo',
           tabBarIcon: ({ color }) => (
@@ -174,27 +176,15 @@ function BottomTabNavigator() {
 }
 
 const PageStack = createNativeStackNavigator<PagesParamList>()
-const HeaderBackButton = headerBackButton()
-function NativeStackNavigator() {
+function NativeStackNavigator({ navigation: {setParams}, navigation }) {
 
   return (
     <PageStack.Navigator
       initialRouteName="UploadPhoto"
     >
       <PageStack.Screen
-      name="UploadPhoto"
-      component={UploadPhoto}
-      options={{
-        headerLeft: (props) => (
-          <HeaderBackButton
-          {...props}
-          {console.log(props)}
-            onPress={() => {
-            }}
-            
-          />
-        ),
-      }}
+        name="UploadPhoto"
+        component={UploadPhoto}
       />
     </PageStack.Navigator>
   )

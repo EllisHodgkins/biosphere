@@ -7,14 +7,24 @@ interface Props {
   navigation: any;
   cameraVisible: boolean;
   setCameraVisible: Function;
+  route: object; 
 }
 
 const TakePhoto: React.FC<Props> = ({
   navigation,
   cameraVisible,
   setCameraVisible,
+  route,
 }) => {
   const [image, setImage] = useState({});
+
+  console.log(route)
+  // console.log(navigation.state)
+
+  // if (route.params?.cameraOn) { 
+  //   console.log('route')
+  //   cameraVisible = true 
+  // }
 
   useEffect(() => {
     if (cameraVisible) {

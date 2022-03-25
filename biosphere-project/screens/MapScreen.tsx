@@ -1,5 +1,5 @@
-import { Text, View, ToastAndroid, StyleSheet } from 'react-native';
-import { Dimensions } from 'react-native';
+import { Text, View, ToastAndroid, StyleSheet, ScrollView, Image } from 'react-native';
+import { Dimensions, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import * as React from 'react';
 import * as Location from 'expo-location';
@@ -10,9 +10,30 @@ interface LocationState {
   longitude: number;
 }
 
-const MainMap: React.FC = () => {
+interface MapProps {
+  navigation: any;
+  route: object;
+  image?: object;
+}
+
+const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
   const [location, setLocation] = useState<LocationState | {}>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [photo, setPhoto] = useState(false);
+  // const TestParams = {...route.params }
+  // console.log(TestParams);
+  let base64Icon = ''
+
+  useEffect(() => {
+    if (route.params) {
+      setPhoto(route.params)
+      base64Icon = 'data:image/png;base64,' + photo
+      console.log(base64Icon)
+    }
+
+  }, [route])
+
+  
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -61,20 +82,39 @@ const MainMap: React.FC = () => {
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
       ></MapView>
+      <ScrollView>
+        {
+        image && <Image
+          source={{
+          uri: `${base64Icon}`,
+        }}/> 
+        || <Text>hello</Text>
+        }
+        <Text>Hello</Text>
+        <Button
+          title={'Modal'}
+          onPress={() => navigation.navigate('Modal')}
+          >
+        </Button>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  contentBox: {
+
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
   },
   map: {
+    alignSelf: 'flex-start',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height * 0.45,
     zIndex: 0,
     elevation: 0,
   },

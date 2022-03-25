@@ -31,7 +31,7 @@ const TakePhoto: React.FC<Props> = ({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0,
             base64: true,
           });
         })
@@ -45,7 +45,12 @@ const TakePhoto: React.FC<Props> = ({
         })
         .finally(() => {
           setLibraryVisible(false);
-          navigation.goBack();
+          const imageData = image.base64
+          console.log('image thingy', imageData)
+          navigation.navigate('Root', {
+            screen: 'MapPage',
+            params: `imageData`,
+          });
         });
     }
   }, [libraryVisible]);

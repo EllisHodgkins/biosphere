@@ -29,11 +29,14 @@ export type PagesParamList = {
   UploadPhoto: undefined;
 }
 
+export type navParams = {
+  test: boolean;
+}
+
 export type RootTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  TabThree: undefined;
-  TabFour: undefined;
+  MapPage: undefined;
+  CameraPage: any;
+  LibraryPage: undefined;
 
 };
 
