@@ -1,4 +1,11 @@
-import { Text, View, ToastAndroid, StyleSheet, ScrollView, Image } from 'react-native';
+import {
+  Text,
+  View,
+  ToastAndroid,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from 'react-native';
 import { Dimensions, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import * as React from 'react';
@@ -19,21 +26,14 @@ interface MapProps {
 const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
   const [location, setLocation] = useState<LocationState | {}>({});
   const [isLoading, setIsLoading] = useState(true);
-  const [photo, setPhoto] = useState(false);
-  // const TestParams = {...route.params }
-  // console.log(TestParams);
-  let base64Icon = ''
+  const [photo, setPhoto] = useState('');
+  
 
   useEffect(() => {
     if (route.params) {
-      setPhoto(route.params)
-      base64Icon = 'data:image/png;base64,' + photo
-      console.log(base64Icon)
+      setPhoto(`data:image/jpg;base64,${route.params.image.base64}`);
     }
-
-  }, [route])
-
-  
+  }, [route]);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -83,28 +83,17 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
         userLocationFastestInterval={60000}
       ></MapView>
       <ScrollView>
-        {
-        image && <Image
-          source={{
-          uri: `${base64Icon}`,
-        }}/> 
-        || <Text>hello</Text>
-        }
-        <Text>Hello</Text>
-        <Button
-          title={'Modal'}
-          onPress={() => navigation.navigate('Modal')}
-          >
-        </Button>
+        <Image
+          style={{ flex: 1, height: 350, width: 350 }}
+          source={{ uri: photo }}
+        />
       </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  contentBox: {
-
-  },
+  contentBox: {},
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -114,7 +103,7 @@ const styles = StyleSheet.create({
   map: {
     alignSelf: 'flex-start',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height * 0.45,
+    height: Dimensions.get('window').height - 500,
     zIndex: 0,
     elevation: 0,
   },

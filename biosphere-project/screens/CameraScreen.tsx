@@ -7,7 +7,7 @@ interface Props {
   navigation: any;
   cameraVisible: boolean;
   setCameraVisible: Function;
-  route: object; 
+  route: object;
 }
 
 const TakePhoto: React.FC<Props> = ({
@@ -16,14 +16,12 @@ const TakePhoto: React.FC<Props> = ({
   setCameraVisible,
   route,
 }) => {
-  const [image, setImage] = useState({});
-
-  console.log(route)
+  // console.log(route);
   // console.log(navigation.state)
 
-  // if (route.params?.cameraOn) { 
+  // if (route.params?.cameraOn) {
   //   console.log('route')
-  //   cameraVisible = true 
+  //   cameraVisible = true
   // }
 
   useEffect(() => {
@@ -46,8 +44,14 @@ const TakePhoto: React.FC<Props> = ({
           });
         })
         .then((result) => {
+          console.log(result);
           if (!result.cancelled) {
-            setImage(result);
+            navigation.navigate('Root', {
+              screen: 'MapPage',
+              params: {
+                image: result,
+              },
+            });
           }
         })
         .catch((err) => {
@@ -55,12 +59,14 @@ const TakePhoto: React.FC<Props> = ({
         })
         .finally(() => {
           setCameraVisible(false);
-          navigation.navigate('Pages');
+          navigation.navigate('Root', {
+            screen: 'MapPage',
+          });
         });
     }
   }, [cameraVisible]);
 
-  return (<></>)
+  return <></>;
 };
 
 export default TakePhoto;
