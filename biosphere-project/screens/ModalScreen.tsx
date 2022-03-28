@@ -16,6 +16,7 @@ import { Text, View } from '../components/Themed';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import * as Location from 'expo-location';
 import MultipleSelect from 'react-native-multiple-select';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
 
 const tagList = [
   'Invasive',
@@ -174,10 +175,21 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
         {photo ? (
           <Image style={styles.userImage} source={{ uri: photo }} />
         ) : (
-          <Image
-            style={styles.userImage}
-            source={{ uri: '../assets/images/adaptve-icon.png' }}
-          />
+          <View style={styles.placeHolder}>
+            <MaterialIcons
+              name="add-photo-alternate"
+              size={55}
+              color={'black'}
+              style={styles.iconStyle}
+            />
+            <Entypo
+              // onPress={navigation.navigate('Root', { screen: 'CameraPage' })}
+              name="camera"
+              size={50}
+              color={'black'}
+              style={styles.iconStyle}
+            />
+          </View>
         )}
 
         <Text>*Title</Text>
@@ -270,22 +282,23 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    width: 250,
+    width: 300,
     margin: 12,
     borderWidth: 1,
     padding: 10,
   },
   paraInput: {
     height: 80,
-    width: 250,
+    width: 300,
     margin: 12,
     borderWidth: 1,
     padding: 10,
   },
   formContainer: {
-    width: 250,
+    width: 300,
   },
   submitButton: {
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     width: 100,
@@ -293,6 +306,18 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     borderColor: 'black',
     borderWidth: 3,
+  },
+  placeHolder: {
+    backgroundColor: 'grey',
+    alignSelf: 'center',
+    height: 250,
+    width: 250,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconStyle: {
+    padding: 30,
   },
 });
 

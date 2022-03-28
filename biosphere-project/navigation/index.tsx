@@ -75,25 +75,13 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
-      {/* <Stack.Screen
-        name="Pages"
-        component={NativeStackNavigator}
-      /> */}
+
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen
           name="Modal"
           component={ModalScreen}
           options={({ navigation }) => ({
             title: 'Upload',
-
-            //   headerLeft: () => (
-            //     <Pressable
-            //       onPress={() => navigation.navigate('Root')}
-            //       style={({ pressed }) => ({
-            //         opacity: pressed ? 0.5 : 1,
-            //       })}
-            //     />
-            //   ),
           })}
         />
       </Stack.Group>
