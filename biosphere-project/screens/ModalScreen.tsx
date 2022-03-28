@@ -11,6 +11,7 @@ import { Text, View } from "../components/Themed";
 import { useForm, Controller } from "react-hook-form";
 import CustomMultiPicker from "react-native-multiple-select-list";
 
+
 const tagList = ["Invasive", "Plant", "Weed", "Indigenous", "Planted", "Wild"]
 
 interface Props {
@@ -31,6 +32,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
   });
 
   const [photo, setPhoto] = useState<string>("");
+  const [text, setText] = useState<string>("");
 
   useEffect(() => {
     if (route.params) {
@@ -86,7 +88,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
       />
       </View>
 
-      <TextInput style={styles.paraInput} placeholder="Optional Description"/>
+      <TextInput style={styles.paraInput} placeholder="Optional Description" multiline={true}/>
       <Pressable
           onPress={() =>
             navigation.navigate("Root", {
