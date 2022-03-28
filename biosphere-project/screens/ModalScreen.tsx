@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -7,45 +7,45 @@ import {
   Pressable,
   Image,
   ToastAndroid,
-  ScrollView,
   SafeAreaView,
-} from "react-native";
-import { Picker } from "@react-native-picker/picker";
-// import Picker from "@react-native-community/picker"
-import { Text, View } from "../components/Themed";
-import { useForm, Controller } from "react-hook-form";
-import CustomMultiPicker from "react-native-multiple-select-list";
-import * as Location from "expo-location";
+  Dimensions,
+  KeyboardAvoidingView,
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { Text, View } from '../components/Themed';
+import CustomMultiPicker from 'react-native-multiple-select-list';
+import * as Location from 'expo-location';
+import MultipleSelect from 'react-native-multiple-select';
 
 const tagList = [
-  "Invasive",
-  "Weed",
-  "Indigenous",
-  "Planted",
-  "Wild",
-  "Waterscape",
-  "Landscape",
-  "Warning/Hazard",
-  "Plant",
-  "Animal",
-  "Pollution",
-  "Mammal",
-  "Bird",
-  "Reptile",
-  "Amphibian",
-  "Fish",
-  "Algae",
-  "Moss",
+  'Invasive',
+  'Weed',
+  'Indigenous',
+  'Planted',
+  'Wild',
+  'Waterscape',
+  'Landscape',
+  'Warning/Hazard',
+  'Plant',
+  'Animal',
+  'Pollution',
+  'Mammal',
+  'Bird',
+  'Reptile',
+  'Amphibian',
+  'Fish',
+  'Algae',
+  'Moss',
 ];
 const catergories = [
-  "Coastal",
-  "Freshwater",
-  "Grassland",
-  "Woodland",
-  "Mountain/Hill",
-  "Urban",
-  "Roadside",
-  "Geological",
+  'Coastal',
+  'Freshwater',
+  'Grassland',
+  'Woodland',
+  'Mountain/Hill',
+  'Urban',
+  'Roadside',
+  'Geological',
 ];
 
 interface PostData {
@@ -65,19 +65,25 @@ interface Props {
 }
 
 const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
-  const [postData, setPostData] = useState<PostData | {}>({});
-  const [photo, setPhoto] = useState<string>("");
-  const [text, setText] = useState<string>("");
-  const [category, setCategory] = useState();
-
-  console.log(postData);
+  const [postData, setPostData] = useState<PostData | {}>({
+    longitude: null,
+    latitude: null,
+    title: null,
+    category: null,
+    tags: [],
+    description: null,
+    image: null,
+    timestamp: null,
+  });
+  const [photo, setPhoto] = useState<string>('');
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
-        if (status !== "granted") {
+        if (status !== 'granted') {
           ToastAndroid.show(
-            "Location permissions required to use this app.",
+            'Location permissions required to use this app.',
             ToastAndroid.LONG
           );
           return;
@@ -104,7 +110,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
       setPhoto(`data:image/jpg;base64,${route.params.params.base64}`);
       setPostData((currentData) => {
         const newData = { ...currentData };
-        newData.image = `data:image/jpg;base64,${route.params.params.base64}`;
+        newData.image = photo;
         return newData;
       });
     }
@@ -115,8 +121,8 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
       headerLeft: () => (
         <Pressable
           onPress={() =>
-            navigation.navigate("Root", {
-              screen: "MapPage",
+            navigation.navigate('Root', {
+              screen: 'MapPage',
             })
           }
           style={styles.backButton}
@@ -125,12 +131,38 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    if (
+      postData.title &&
+      postData.longitude &&
+      postData.latitude &&
+      postData.image &&
+      postData.category &&
+      postData.tags
+    ) {
+      setIsDisabled(false);
+    }
+  }, [postData]);
+
+  const handleSubmit = (e) => {
+    navigation.navigate('Root', {
+      screen: 'MapPage',
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <KeyboardAvoidingView behavior={'padding'}>
+        <Text>*Category</Text>
         <Picker
-          selectedValue={category}
-          onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
+          selectedValue={postData.category}
+          onValueChange={(itemValue) =>
+            setPostData((currentData) => {
+              const newData = { ...currentData };
+              newData.category = itemValue;
+              return newData;
+            })
+          }
         >
           <Picker.Item label="Please select a category" value="0" />
 
@@ -138,6 +170,17 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
             <Picker.Item label={category} value={category} key={category} />
           ))}
         </Picker>
+
+        {photo ? (
+          <Image style={styles.userImage} source={{ uri: photo }} />
+        ) : (
+          <Image
+            style={styles.userImage}
+            source={{ uri: '../assets/images/adaptve-icon.png' }}
+          />
+        )}
+
+        <Text>*Title</Text>
         <TextInput
           style={styles.input}
           placeholder="Title"
@@ -150,48 +193,39 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
           }
         />
 
-        {photo ? (
-          <Image style={styles.userImage} source={{ uri: photo }} />
-        ) : (
-          <Image
-            style={styles.userImage}
-            source={{ uri: "../assets/images/adaptve-icon.png" }}
-          />
-        )}
-
         <View style={styles.formContainer}>
+          <Text>*Tags</Text>
           <CustomMultiPicker
             options={tagList}
-            search={true} // should show search bar?
-            multiple={true} //
-            placeholder={"Add a Tag"}
-            placeholderTextColor={"#757575"}
-            returnValue={"label"} // label or value
+            search={true}
+            multiple={true}
+            placeholder={'Add a Tag'}
+            placeholderTextColor={'#757575'}
+            returnValue={'label'}
             callback={(res) => {
-              console.log(res);
               setPostData((currentData) => {
                 const newData = { ...currentData };
                 newData.tags = res;
                 return newData;
               });
-            }} // callback, array of selected items
-            rowBackgroundColor={"#eee"}
+            }}
+            rowBackgroundColor={'#eee'}
             rowHeight={40}
             rowRadius={5}
             searchIconName="ios-checkmark"
             searchIconColor="black"
             searchIconSize={15}
-            iconColor={"#00a2dd"}
+            iconColor={'#00a2dd'}
             iconSize={15}
-            selectedIconName={"ios-checkmark-circle-outline"}
-            unselectedIconName={"ios-radio-button-off-outline"}
+            selectedIconName={'ios-checkmark-circle-outline'}
+            unselectedIconName={'ios-radio-button-off-outline'}
             scrollViewHeight={100}
           />
         </View>
 
         <TextInput
           style={styles.paraInput}
-          placeholder="Optional Description"
+          placeholder="Description (Optional)"
           multiline={true}
           onChangeText={(e) =>
             setPostData((currentData) => {
@@ -202,19 +236,13 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
           }
         />
         <Pressable
-          onPress={() =>
-            navigation.navigate("Root", {
-              screen: "MapPage",
-            })
-          }
+          disabled={isDisabled}
+          onPress={(e) => handleSubmit(e)}
           style={styles.submitButton}
         >
           <Text>Upload</Text>
         </Pressable>
-
-        {/* Use a light status bar on iOS to account for the black space above the modal */}
-        <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-      </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -222,22 +250,19 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
+    fontWeight: 'bold',
   },
   backButton: {
     width: 50,
     height: 30,
-    backgroundColor: "green",
+    backgroundColor: 'green',
   },
   userImage: {
     width: 250,
@@ -251,7 +276,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   paraInput: {
-    height: 150,
+    height: 80,
     width: 250,
     margin: 12,
     borderWidth: 1,
@@ -261,12 +286,12 @@ const styles = StyleSheet.create({
     width: 250,
   },
   submitButton: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 100,
-    height: 45,
+    height: 35,
     borderRadius: 75,
-    borderColor: "black",
+    borderColor: 'black',
     borderWidth: 3,
   },
 });

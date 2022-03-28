@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
   map: {
     alignSelf: 'flex-start',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height - 500,
+    height: Dimensions.get('window').height - 150,
     zIndex: 0,
     elevation: 0,
   },
