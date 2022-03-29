@@ -38,6 +38,9 @@ const TakePhoto: React.FC<Props> = ({
         .then((result) => {
           if (!result.cancelled) {
             setImage(result);
+            navigation.navigate('Modal', {
+              params: result,
+            });
           }
         })
         .catch((err) => {
@@ -45,12 +48,7 @@ const TakePhoto: React.FC<Props> = ({
         })
         .finally(() => {
           setLibraryVisible(false);
-          const imageData = image.base64
-          console.log('image thingy', imageData)
-          navigation.navigate('Root', {
-            screen: 'MapPage',
-            params: `imageData`,
-          });
+          navigation.navigate('Modal');
         });
     }
   }, [libraryVisible]);

@@ -17,7 +17,7 @@ import {
   DarkTheme,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HeaderBackButton } from '@react-navigation/elements'
+import { HeaderBackButton } from '@react-navigation/elements';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
@@ -31,7 +31,7 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import MapScreen from '../screens/MapScreen';
 import CameraScreen from '../screens/CameraScreen';
 import ImageLibrary from '../screens/ImageLibrary';
-import UploadPhoto from '../screens/UploadPhoto'
+import UploadPhoto from '../screens/UploadPhoto';
 
 import {
   RootStackParamList,
@@ -75,12 +75,15 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
-      <Stack.Screen
-        name="Pages"
-        component={NativeStackNavigator}
-      />
+
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen
+          name="Modal"
+          component={ModalScreen}
+          options={({ navigation }) => ({
+            title: 'Upload',
+          })}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -127,7 +130,7 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="CameraPage"
         // component={() => <CameraScreen clicked={1}/>}
-        initialParams={ { test: false} }
+        initialParams={{ test: false }}
         options={{
           title: 'Take a photo',
           tabBarIcon: ({ color }) => (
@@ -175,20 +178,20 @@ function BottomTabNavigator() {
   );
 }
 
-const PageStack = createNativeStackNavigator<PagesParamList>()
-function NativeStackNavigator({ navigation: {setParams}, navigation }) {
+// const PageStack = createNativeStackNavigator<PagesParamList>()
+// function NativeStackNavigator({ navigation: {setParams}, navigation }) {
 
-  return (
-    <PageStack.Navigator
-      initialRouteName="UploadPhoto"
-    >
-      <PageStack.Screen
-        name="UploadPhoto"
-        component={UploadPhoto}
-      />
-    </PageStack.Navigator>
-  )
-}
+//   return (
+//     <PageStack.Navigator
+//       initialRouteName="UploadPhoto"
+//     >
+//       <PageStack.Screen
+//         name="UploadPhoto"
+//         component={UploadPhoto}
+//       />
+//     </PageStack.Navigator>
+//   )
+// }
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/

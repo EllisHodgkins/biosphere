@@ -15,8 +15,6 @@ interface LocationState {
 
 interface MapProps {
   navigation: any;
-  route: object;
-  image?: object;
 }
 
 interface Markers {
@@ -64,6 +62,7 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
     getMarkers(1, 2, 3, 4)
       .then(response => setMarkers(response))
   }, [])
+
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -148,6 +147,7 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
         showsCompass={true}
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
+
       >
         {markers && generateMarkers()}
       </MapView>
@@ -156,11 +156,6 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  contentBox: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
