@@ -6,15 +6,15 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-} from "react-native";
-import { Dimensions, Button } from "react-native";
-import MapView from "react-native-maps";
-import { Marker, Callout } from "react-native-maps";
-import * as React from "react";
-import * as Location from "expo-location";
-import { useState, useEffect, useRef } from "react";
-import { getMarkers } from "../api/server";
-import { Modalize } from "react-native-modalize";
+} from 'react-native';
+import { Dimensions, Button } from 'react-native';
+import MapView from 'react-native-maps';
+import { Marker, Callout } from 'react-native-maps';
+import * as React from 'react';
+import * as Location from 'expo-location';
+import { useState, useEffect, useRef } from 'react';
+import { getMarkers } from '../api/server';
+import { Modalize } from 'react-native-modalize';
 
 interface LocationState {
   latitude: number;
@@ -54,14 +54,14 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
     modalizeRef.current?.open();
   };
 
-  let base64Icon = "";
+  let base64Icon = '';
 
   useEffect(() => {
     // @ts-ignore
     if (route.params) {
       // @ts-ignore
       setPhoto(route.params);
-      base64Icon = "data:image/png;base64," + photo;
+      base64Icon = 'data:image/png;base64,' + photo;
       console.log(base64Icon);
     }
   }, [route]);
@@ -74,9 +74,9 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
-        if (status !== "granted") {
+        if (status !== 'granted') {
           ToastAndroid.show(
-            "Location permissions required to use this app.",
+            'Location permissions required to use this app.',
             ToastAndroid.LONG
           );
           return;
@@ -100,7 +100,7 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
     Freshwater: 0,
     Grassland: 0,
     Woodland: 0,
-    "Mountain/Hill": 0,
+    'Mountain/Hill': 0,
     Urban: 0,
     Roadside: 0,
     Geological: 0,
@@ -165,14 +165,14 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   map: {
-    alignSelf: "flex-start",
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.7,
+    alignSelf: 'flex-start',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
     zIndex: 0,
     elevation: 0,
   },

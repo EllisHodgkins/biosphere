@@ -1,5 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { StatusBar } from 'expo-status-bar';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -11,14 +11,14 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   ScrollView,
-} from "react-native";
-import { Picker } from "@react-native-picker/picker";
-import { Text, View } from "../components/Themed";
-import CustomMultiPicker from "react-native-multiple-select-list";
-import * as Location from "expo-location";
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import DropDownPicker from "react-native-dropdown-picker";
-import { sendPost } from "../api/server";
+} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { Text, View } from '../components/Themed';
+import CustomMultiPicker from 'react-native-multiple-select-list';
+import * as Location from 'expo-location';
+import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { sendPost } from '../api/server';
 
 interface PostData {
   longitude: number;
@@ -42,37 +42,37 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const [category, setCategory] = useState(null);
   const [categoryList, setCategoryList] = useState([
-    { label: "Coastal", value: "Coastal" },
-    { label: "Freshwater", value: "Freshwater" },
-    { label: "Grassland", value: "Grassland" },
-    { label: "Woodland", value: "Woodland" },
-    { label: "Mountain/Hill", value: "Mountain/Hill" },
-    { label: "Urban", value: "Urban" },
-    { label: "Roadside", value: "Roadside" },
-    { label: "Geological", value: "Geological" },
+    { label: 'Coastal', value: 'Coastal' },
+    { label: 'Freshwater', value: 'Freshwater' },
+    { label: 'Grassland', value: 'Grassland' },
+    { label: 'Woodland', value: 'Woodland' },
+    { label: 'Mountain/Hill', value: 'Mountain/Hill' },
+    { label: 'Urban', value: 'Urban' },
+    { label: 'Roadside', value: 'Roadside' },
+    { label: 'Geological', value: 'Geological' },
     ,
   ]);
 
   const [tags, setTags] = useState([]);
   const [tagList, setTagList] = useState([
-    { label: "Invasive", value: "Invasive" },
-    { label: "Weed", value: "Weed" },
-    { label: "Indigenous", value: "Indigenous" },
-    { label: "Planted", value: "Planted" },
-    { label: "Wild", value: "Wild" },
-    { label: "Waterscape", value: "Waterscape" },
-    { label: "Landscape", value: "Landscape" },
-    { label: "Warning/Hazard", value: "Warning/Hazard" },
-    { label: "Plant", value: "Plant" },
-    { label: "Animal", value: "Animal" },
-    { label: "Pollution", value: "Pollution" },
-    { label: "Mammal", value: "Mammal" },
-    { label: "Bird", value: "Bird" },
-    { label: "Reptile", value: "Reptile" },
-    { label: "Amphibian", value: "Amphibian" },
-    { label: "Fish", value: "Fish" },
-    { label: "Algae", value: "Algae" },
-    { label: "Moss", value: "Moss" },
+    { label: 'Invasive', value: 'Invasive' },
+    { label: 'Weed', value: 'Weed' },
+    { label: 'Indigenous', value: 'Indigenous' },
+    { label: 'Planted', value: 'Planted' },
+    { label: 'Wild', value: 'Wild' },
+    { label: 'Waterscape', value: 'Waterscape' },
+    { label: 'Landscape', value: 'Landscape' },
+    { label: 'Warning/Hazard', value: 'Warning/Hazard' },
+    { label: 'Plant', value: 'Plant' },
+    { label: 'Animal', value: 'Animal' },
+    { label: 'Pollution', value: 'Pollution' },
+    { label: 'Mammal', value: 'Mammal' },
+    { label: 'Bird', value: 'Bird' },
+    { label: 'Reptile', value: 'Reptile' },
+    { label: 'Amphibian', value: 'Amphibian' },
+    { label: 'Fish', value: 'Fish' },
+    { label: 'Algae', value: 'Algae' },
+    { label: 'Moss', value: 'Moss' },
   ]);
 
   const [postData, setPostData] = useState<PostData | {}>({
@@ -81,18 +81,18 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
     title: null,
     timestamp: null,
     image: null,
-    user: "",
+    user: '',
   });
 
-  const [photo, setPhoto] = useState<string>("");
+  const [photo, setPhoto] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
       .then(({ status }) => {
-        if (status !== "granted") {
+        if (status !== 'granted') {
           ToastAndroid.show(
-            "Location permissions required to use this app.",
+            'Location permissions required to use this app.',
             ToastAndroid.LONG
           );
           return;
@@ -130,8 +130,8 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
       headerLeft: () => (
         <Pressable
           onPress={() =>
-            navigation.navigate("Root", {
-              screen: "MapPage",
+            navigation.navigate('Root', {
+              screen: 'MapPage',
             })
           }
           style={styles.backButton}
@@ -160,7 +160,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
   }, [postData]);
 
   const replaceZ = (date) => {
-    return date.replace(/[Z]$/, "+00:00");
+    return date.replace(/[Z]$/, '+00:00');
   };
 
   const handleSubmit = (e) => {
@@ -176,13 +176,13 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
     // @ts-ignore
     copy.category = category;
     // @ts-ignore
-    copy.user = "bigShaq";
+    copy.user = 'bigShaq';
     sendPost(copy);
   };
 
   return (
     <SafeAreaView style={styles.boxContainer}>
-      <KeyboardAvoidingView behavior={"padding"}>
+      <KeyboardAvoidingView behavior={'padding'}>
         <View style={styles.container}>
           <View style={styles.formContainer}>
             <Text>*Category</Text>
@@ -198,13 +198,13 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               multiple={false}
               mode="BADGE"
               badgeDotColors={[
-                "#e76f51",
-                "#00b4d8",
-                "#e9c46a",
-                "#e76f51",
-                "#8ac926",
-                "#00b4d8",
-                "#e9c46a",
+                '#e76f51',
+                '#00b4d8',
+                '#e9c46a',
+                '#e76f51',
+                '#8ac926',
+                '#00b4d8',
+                '#e9c46a',
               ]}
             />
 
@@ -213,18 +213,27 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
             ) : (
               <View style={styles.placeHolder}>
                 <MaterialIcons
+                  onPress={() =>
+                    navigation.navigate('Root', {
+                      screen: 'LibraryPage',
+                      params: true,
+                    })
+                  }
                   name="add-photo-alternate"
                   size={55}
-                  color={"black"}
+                  color={'black'}
                   style={styles.iconStyle}
                 />
                 <Entypo
                   onPress={() =>
-                    navigation.navigate("Root", { screen: "CameraPage" })
+                    navigation.navigate('Root', {
+                      screen: 'CameraPage',
+                      params: true,
+                    })
                   }
                   name="camera"
                   size={50}
-                  color={"black"}
+                  color={'black'}
                   style={styles.iconStyle}
                 />
               </View>
@@ -258,13 +267,13 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               multiple={true}
               mode="BADGE"
               badgeDotColors={[
-                "#e76f51",
-                "#00b4d8",
-                "#e9c46a",
-                "#e76f51",
-                "#8ac926",
-                "#00b4d8",
-                "#e9c46a",
+                '#e76f51',
+                '#00b4d8',
+                '#e9c46a',
+                '#e76f51',
+                '#8ac926',
+                '#00b4d8',
+                '#e9c46a',
               ]}
             />
           </View>
@@ -297,27 +306,27 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    alignItems: "center",
-    justifyContent: "center",
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   boxContainer: {
     flex: 1,
-    height: Dimensions.get("window").height,
-    width: Dimensions.get("window").width,
-    alignItems: "center",
-    justifyContent: "center",
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   backButton: {
     width: 50,
     height: 30,
-    backgroundColor: "green",
+    backgroundColor: 'green',
   },
   userImage: {
     width: 250,
@@ -341,25 +350,25 @@ const styles = StyleSheet.create({
     width: 300,
   },
   submitButton: {
-    alignSelf: "center",
-    alignItems: "center",
-    justifyContent: "center",
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: 100,
     height: 35,
     borderRadius: 75,
-    borderColor: "black",
+    borderColor: 'black',
     borderWidth: 3,
-    position: "relative",
+    position: 'relative',
     zIndex: -1,
   },
   placeHolder: {
-    backgroundColor: "grey",
-    alignSelf: "center",
+    backgroundColor: 'grey',
+    alignSelf: 'center',
     height: 250,
     width: 250,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iconStyle: {
     padding: 30,

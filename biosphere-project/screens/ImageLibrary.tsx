@@ -7,14 +7,21 @@ interface Props {
   navigation: any;
   libraryVisible: boolean;
   setLibraryVisible: Function;
+  route: object;
 }
 
 const TakePhoto: React.FC<Props> = ({
   navigation,
   libraryVisible,
   setLibraryVisible,
+  route,
 }) => {
-  const [image, setImage] = useState({});
+  useEffect(() => {
+    // @ts-ignore
+    if (route.params) {
+      setLibraryVisible(true);
+    }
+  }, [route]);
 
   useEffect(() => {
     if (libraryVisible) {
@@ -37,7 +44,6 @@ const TakePhoto: React.FC<Props> = ({
         })
         .then((result) => {
           if (!result.cancelled) {
-            setImage(result);
             navigation.navigate('Modal', {
               params: result,
             });
