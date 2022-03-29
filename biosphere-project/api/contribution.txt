@@ -1,0 +1,1 @@
+All API and GraphQL functionality lovingly coded by AboutShaw, aka Mark Shaw.
