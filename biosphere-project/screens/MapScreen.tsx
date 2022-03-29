@@ -15,6 +15,8 @@ interface LocationState {
 
 interface MapProps {
   navigation: any;
+  route: object;
+  image?: object;
 }
 
 interface Markers {
@@ -165,7 +167,7 @@ const styles = StyleSheet.create({
   map: {
     alignSelf: 'flex-start',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height * 0.7,
     zIndex: 0,
     elevation: 0,
   },

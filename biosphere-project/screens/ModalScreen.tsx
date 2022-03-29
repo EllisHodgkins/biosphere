@@ -10,12 +10,12 @@ import {
   SafeAreaView,
   Dimensions,
   KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { Text, View } from '../components/Themed';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import * as Location from 'expo-location';
-import MultipleSelect from 'react-native-multiple-select';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 
 const tagList = [
@@ -134,11 +134,17 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
 
   useEffect(() => {
     if (
+      // @ts-ignore
       postData.title &&
+      // @ts-ignore
       postData.longitude &&
+      // @ts-ignore
       postData.latitude &&
+      // @ts-ignore
       postData.image &&
+      // @ts-ignore
       postData.category &&
+      // @ts-ignore
       postData.tags
     ) {
       setIsDisabled(false);
@@ -153,9 +159,11 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView nestedScrollEnabled={true}>
       <KeyboardAvoidingView behavior={'padding'}>
         <Text>*Category</Text>
         <Picker
+        // @ts-ignore
           selectedValue={postData.category}
           onValueChange={(itemValue) =>
             setPostData((currentData) => {
@@ -183,7 +191,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               style={styles.iconStyle}
             />
             <Entypo
-              // onPress={navigation.navigate('Root', { screen: 'CameraPage' })}
+              onPress={ () => navigation.navigate('Root', { screen: 'CameraPage' })}
               name="camera"
               size={50}
               color={'black'}
@@ -255,6 +263,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
           <Text>Upload</Text>
         </Pressable>
       </KeyboardAvoidingView>
+      </ScrollView>
     </SafeAreaView>
   );
 };
