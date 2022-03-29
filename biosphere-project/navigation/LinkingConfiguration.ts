@@ -32,15 +32,6 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
         },
       },
-      Pages : {
-        screens: {
-          UploadPhoto: {
-            screens: {
-              TabOneScreen: 'one',
-            }
-          }
-        }
-      },
       Modal: 'modal',
       NotFound: '*',
     },
