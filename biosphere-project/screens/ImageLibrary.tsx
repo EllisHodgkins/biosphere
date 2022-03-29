@@ -31,13 +31,16 @@ const TakePhoto: React.FC<Props> = ({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [1, 1],
-            quality: 1,
+            quality: 0,
             base64: true,
           });
         })
         .then((result) => {
           if (!result.cancelled) {
             setImage(result);
+            navigation.navigate('Modal', {
+              params: result,
+            });
           }
         })
         .catch((err) => {
@@ -45,7 +48,7 @@ const TakePhoto: React.FC<Props> = ({
         })
         .finally(() => {
           setLibraryVisible(false);
-          navigation.goBack();
+          navigation.navigate('Modal');
         });
     }
   }, [libraryVisible]);

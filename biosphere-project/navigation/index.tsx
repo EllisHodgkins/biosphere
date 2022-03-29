@@ -17,6 +17,7 @@ import {
   DarkTheme,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { HeaderBackButton } from '@react-navigation/elements';
 import * as React from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
@@ -27,14 +28,16 @@ import ModalScreen from '../screens/ModalScreen';
 
 // Screens
 import NotFoundScreen from '../screens/NotFoundScreen';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
-import TabThreeScreen from '../screens/TabThreeScreen';
+import MapScreen from '../screens/MapScreen';
+import CameraScreen from '../screens/CameraScreen';
+import ImageLibrary from '../screens/ImageLibrary';
+import UploadPhoto from '../screens/UploadPhoto';
 
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
+  PagesParamList,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
@@ -72,8 +75,15 @@ function RootNavigator() {
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
+
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
+        <Stack.Screen
+          name="Modal"
+          component={ModalScreen}
+          options={({ navigation }) => ({
+            title: 'Upload',
+          })}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -92,15 +102,15 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="MapPage"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
       <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        name="MapPage"
+        component={MapScreen}
+        options={({ navigation }: RootTabScreenProps<'MapPage'>) => ({
           title: 'Map',
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="map-marked" size={24} color={color} />
@@ -118,8 +128,9 @@ function BottomTabNavigator() {
       />
 
       <BottomTab.Screen
-        name="TabTwo"
-        // component={() => <TabTwoScreen clicked={1}/>}
+        name="CameraPage"
+        // component={() => <CameraScreen clicked={1}/>}
+        initialParams={{ test: false }}
         options={{
           title: 'Take a photo',
           tabBarIcon: ({ color }) => (
@@ -133,7 +144,7 @@ function BottomTabNavigator() {
         }}
       >
         {(props) => (
-          <TabTwoScreen
+          <CameraScreen
             {...props}
             cameraVisible={cameraVisible}
             setCameraVisible={setCameraVisible}
@@ -142,7 +153,7 @@ function BottomTabNavigator() {
       </BottomTab.Screen>
 
       <BottomTab.Screen
-        name="TabThree"
+        name="LibraryPage"
         options={{
           title: 'Choose a photo',
           tabBarIcon: ({ color }) => (
@@ -156,7 +167,7 @@ function BottomTabNavigator() {
         }}
       >
         {(props) => (
-          <TabThreeScreen
+          <ImageLibrary
             {...props}
             libraryVisible={libraryVisible}
             setLibraryVisible={setLibraryVisible}
@@ -166,6 +177,21 @@ function BottomTabNavigator() {
     </BottomTab.Navigator>
   );
 }
+
+// const PageStack = createNativeStackNavigator<PagesParamList>()
+// function NativeStackNavigator({ navigation: {setParams}, navigation }) {
+
+//   return (
+//     <PageStack.Navigator
+//       initialRouteName="UploadPhoto"
+//     >
+//       <PageStack.Screen
+//         name="UploadPhoto"
+//         component={UploadPhoto}
+//       />
+//     </PageStack.Navigator>
+//   )
+// }
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
