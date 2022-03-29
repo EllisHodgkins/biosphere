@@ -151,12 +151,8 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
         showsCompass={true}
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
-
       > 
-      <>
-        <Button title="refresh" onPress={() => console.log('hello')} />
         {markers && generateMarkers()}
-      </>
       </MapView>
     </View>
   );

@@ -17,37 +17,8 @@ import { Text, View } from '../components/Themed';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import * as Location from 'expo-location';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
-
-const tagList = [
-  'Invasive',
-  'Weed',
-  'Indigenous',
-  'Planted',
-  'Wild',
-  'Waterscape',
-  'Landscape',
-  'Warning/Hazard',
-  'Plant',
-  'Animal',
-  'Pollution',
-  'Mammal',
-  'Bird',
-  'Reptile',
-  'Amphibian',
-  'Fish',
-  'Algae',
-  'Moss',
-];
-const catergories = [
-  'Coastal',
-  'Freshwater',
-  'Grassland',
-  'Woodland',
-  'Mountain/Hill',
-  'Urban',
-  'Roadside',
-  'Geological',
-];
+import DropDownPicker from 'react-native-dropdown-picker';
+import { sendPost } from '../api/server'
 
 interface PostData {
   longitude: number;
@@ -66,6 +37,44 @@ interface Props {
 }
 
 const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
+  const [openTags, setOpenTags] = useState(false);
+  const [openCategories, setOpenCategories] = useState(false);
+
+  const [category, setCategory] = useState(null);
+  const [categoryList, setCategoryList] = useState([
+
+    { label: 'Coastal', value: 'Coastal' },
+    { label: 'Freshwater', value: 'Freshwater' },
+    { label: 'Grassland', value: 'Grassland' },
+    { label: 'Woodland', value: 'Woodland' },
+    { label: 'Mountain/Hill', value: 'Mountain/Hill' },
+    { label: 'Urban', value: 'Urban' },
+    { label: 'Roadside', value: 'Roadside' },
+    { label: 'Geological', value: 'Geological' }, ,
+  ]);
+  
+  const [tags, setTags] = useState([])
+  const [tagList, setTagList] = useState([
+    { label: 'Invasive', value: "Invasive" },
+    { label: 'Weed', value: 'Weed' },
+    { label: 'Indigenous', value: 'Indigenous' },
+    { label: 'Planted', value: 'Planted' },
+    { label: 'Wild', value: 'Wild' },
+    { label: 'Waterscape', value: 'Waterscape' },
+    { label: 'Landscape', value: 'Landscape' },
+    { label: 'Warning/Hazard', value: 'Warning/Hazard' },
+    { label: 'Plant', value: 'Plant' },
+    { label: 'Animal', value: 'Animal' },
+    { label: 'Pollution', value: 'Pollution' },
+    { label: 'Mammal', value: 'Mammal' },
+    { label: 'Bird', value: 'Bird' },
+    { label: 'Reptile', value: 'Reptile' },
+    { label: 'Amphibian', value: 'Amphibian' },
+    { label: 'Fish', value: 'Fish' },
+    { label: 'Algae', value: 'Algae' },
+    { label: 'Moss', value: 'Moss' },
+  ]);
+
   const [postData, setPostData] = useState<PostData | {}>({
     longitude: null,
     latitude: null,
@@ -73,9 +82,10 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
     category: null,
     tags: [],
     description: null,
-    image: null,
     timestamp: null,
+    image: null,
   });
+
   const [photo, setPhoto] = useState<string>('');
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -143,128 +153,134 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
       // @ts-ignore
       postData.image &&
       // @ts-ignore
-      postData.category &&
+      category &&
       // @ts-ignore
-      postData.tags
+      tags
     ) {
       setIsDisabled(false);
     }
   }, [postData]);
 
+  const replaceZ = (date) => {
+    return date.replace(/[Z]$/, '+00:00')
+  }
+
   const handleSubmit = (e) => {
-    navigation.navigate('Root', {
-      screen: 'MapPage',
-    });
+    // navigation.navigate('Root', {
+    //   screen: 'MapPage',
+    // });
+    // @ts-ignore
+    const { ...copy } = postData
+    // @ts-ignore
+    copy.captured = replaceZ(new Date(Date.now()).toJSON());
+    // @ts-ignore
+    copy.tags = tags
+    // @ts-ignore
+    copy.category = category
+    // @ts-ignore
+    copy.username = 'bigShaq'
+    console.log(copy.username)
+
+    sendPost(copy)
+
   };
+  
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView nestedScrollEnabled={true}>
+    <SafeAreaView style={styles.boxContainer}>
       <KeyboardAvoidingView behavior={'padding'}>
-        <Text>*Category</Text>
-        <Picker
-        // @ts-ignore
-          selectedValue={postData.category}
-          onValueChange={(itemValue) =>
-            setPostData((currentData) => {
-              const newData = { ...currentData };
-              newData.category = itemValue;
-              return newData;
-            })
-          }
-        >
-          <Picker.Item label="Please select a category" value="0" />
+        <View style={styles.container}>
+          <View style={styles.formContainer}>
+            <Text>*Category</Text>
 
-          {catergories.map((category) => (
-            <Picker.Item label={category} value={category} key={category} />
-          ))}
-        </Picker>
+            <DropDownPicker
+              open={openCategories}
+              value={category}
+              items={categoryList}
+              setOpen={setOpenCategories}
+              setValue={setCategory}
+              setItems={setCategoryList}
 
-        {photo ? (
-          <Image style={styles.userImage} source={{ uri: photo }} />
-        ) : (
-          <View style={styles.placeHolder}>
-            <MaterialIcons
-              name="add-photo-alternate"
-              size={55}
-              color={'black'}
-              style={styles.iconStyle}
+              theme="LIGHT"
+              multiple={false}
+              mode="BADGE"
+              badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
             />
-            <Entypo
-              onPress={ () => navigation.navigate('Root', { screen: 'CameraPage' })}
-              name="camera"
-              size={50}
-              color={'black'}
-              style={styles.iconStyle}
+
+            {photo ? (
+              <Image style={styles.userImage} source={{ uri: photo }} />
+            ) : (
+              <View style={styles.placeHolder}>
+                <MaterialIcons
+                  name="add-photo-alternate"
+                  size={55}
+                  color={'black'}
+                  style={styles.iconStyle}
+                />
+                <Entypo
+                  onPress={() => navigation.navigate('Root', { screen: 'CameraPage' })}
+                  name="camera"
+                  size={50}
+                  color={'black'}
+                  style={styles.iconStyle}
+                />
+              </View>
+            )}
+
+            <Text>*Title</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Title"
+              onChangeText={(e) =>
+                setPostData((currentData) => {
+                  const newData = { ...currentData };
+                  newData.title = e;
+                  return newData;
+                })
+              }
             />
           </View>
-        )}
+          <View style={styles.formContainer}>
+            <Text>*Tags</Text>
+            <DropDownPicker
+              open={openTags}
+              value={tags}
+              items={tagList}
+              setOpen={setOpenTags}
+              setValue={setTags}
+              setItems={setTagList}
 
-        <Text>*Title</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Title"
-          onChangeText={(e) =>
-            setPostData((currentData) => {
-              const newData = { ...currentData };
-              newData.title = e;
-              return newData;
-            })
-          }
-        />
+              zIndex={10}
+              zIndexInverse={10}
+              theme="LIGHT"
+              multiple={true}
+              mode="BADGE"
+              badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
+            />
+          </View>
 
-        <View style={styles.formContainer}>
-          <Text>*Tags</Text>
-          <CustomMultiPicker
-            nestedScrollEnabled = {true}
-            options={tagList}
-            search={true}
-            multiple={true}
-            placeholder={'Add a Tag'}
-            placeholderTextColor={'#757575'}
-            returnValue={'label'}
-            callback={(res) => {
+          <TextInput
+            style={styles.paraInput}
+            placeholder="Description (Optional)"
+            multiline={true}
+            onChangeText={(e) =>
               setPostData((currentData) => {
                 const newData = { ...currentData };
-                newData.tags = res;
+                newData.description = e;
                 return newData;
-              });
-            }}
-            rowBackgroundColor={'#eee'}
-            rowHeight={40}
-            rowRadius={5}
-            searchIconName="ios-checkmark"
-            searchIconColor="black"
-            searchIconSize={15}
-            iconColor={'#00a2dd'}
-            iconSize={15}
-            selectedIconName={'ios-checkmark-circle-outline'}
-            unselectedIconName={'ios-radio-button-off-outline'}
-            scrollViewHeight={100}
+              })
+            }
           />
+          <Pressable
+            disabled={isDisabled}
+            onPress={(e) => handleSubmit(e)}
+            style={styles.submitButton}
+          >
+            <Text>Upload</Text>
+          </Pressable>
         </View>
-
-        <TextInput
-          style={styles.paraInput}
-          placeholder="Description (Optional)"
-          multiline={true}
-          onChangeText={(e) =>
-            setPostData((currentData) => {
-              const newData = { ...currentData };
-              newData.description = e;
-              return newData;
-            })
-          }
-        />
-        <Pressable
-          disabled={isDisabled}
-          onPress={(e) => handleSubmit(e)}
-          style={styles.submitButton}
-        >
-          <Text>Upload</Text>
-        </Pressable>
       </KeyboardAvoidingView>
-      </ScrollView>
+
     </SafeAreaView>
   );
 };
@@ -276,6 +292,14 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  boxContainer: {
+    flex: 1,
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20
   },
   title: {
     fontSize: 20,
@@ -295,7 +319,6 @@ const styles = StyleSheet.create({
     width: 300,
     margin: 12,
     borderWidth: 1,
-    padding: 10,
   },
   paraInput: {
     height: 80,
@@ -303,6 +326,7 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+    zIndex: -1,
   },
   formContainer: {
     width: 300,
@@ -316,6 +340,8 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     borderColor: 'black',
     borderWidth: 3,
+    position: 'relative',
+    zIndex: -1,
   },
   placeHolder: {
     backgroundColor: 'grey',
