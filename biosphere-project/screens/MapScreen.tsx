@@ -114,12 +114,14 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
             <View>
               <Text>{marker?.title}</Text>
               <Text>{marker?.description}</Text>
+
               <TouchableOpacity onPress={onOpen}>
                 <Text>More Details</Text>
               </TouchableOpacity>
               <Modalize ref={modalizeRef}>
                 <Text>{marker?.description}</Text>
               </Modalize>
+
             </View>
           </Callout>
         </Marker>
@@ -151,6 +153,7 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
         userLocationFastestInterval={60000}
 
       >
+        <Button title="refresh" onPress={() => console.log('hello')} />
         {markers && generateMarkers()}
       </MapView>
     </View>
