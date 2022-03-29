@@ -1,7 +1,7 @@
 import { ToastAndroid } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface Props {
   navigation: any;
@@ -59,11 +59,7 @@ const TakePhoto: React.FC<Props> = ({
     }
   }, [libraryVisible]);
 
-  return (
-    <View>
-      <Text>Loading camera...</Text>
-    </View>
-  );
+  return <></>;
 };
 
 export default TakePhoto;

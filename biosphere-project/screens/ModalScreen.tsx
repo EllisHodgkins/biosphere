@@ -163,10 +163,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
     return date.replace(/[Z]$/, '+00:00');
   };
 
-  const handleSubmit = (e) => {
-    // navigation.navigate('Root', {
-    //   screen: 'MapPage',
-    // });
+  const handleSubmit = () => {
     // @ts-ignore
     const { ...copy } = postData;
     // @ts-ignore
@@ -213,18 +210,6 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               <Image style={styles.userImage} source={{ uri: photo }} />
             ) : (
               <View style={styles.placeHolder}>
-                <MaterialIcons
-                  onPress={() =>
-                    navigation.navigate('Root', {
-                      screen: 'LibraryPage',
-                      params: true,
-                    })
-                  }
-                  name="add-photo-alternate"
-                  size={55}
-                  color={'black'}
-                  style={styles.iconStyle}
-                />
                 <Entypo
                   onPress={() =>
                     navigation.navigate('Root', {
@@ -237,13 +222,26 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
                   color={'black'}
                   style={styles.iconStyle}
                 />
+                <MaterialIcons
+                  onPress={() =>
+                    navigation.navigate('Root', {
+                      screen: 'LibraryPage',
+                      params: true,
+                    })
+                  }
+                  name="add-photo-alternate"
+                  size={55}
+                  color={'black'}
+                  style={styles.iconStyle}
+                />
               </View>
             )}
 
             <Text>*Title</Text>
             <TextInput
               style={styles.input}
-              placeholder="Title"
+              editable={!openTags}
+              placeholder="Choose a title..."
               onChangeText={(e) =>
                 setPostData((currentData) => {
                   const newData = { ...currentData };
@@ -293,7 +291,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
           />
           <Pressable
             // disabled={isDisabled}
-            onPress={(e) => handleSubmit(e)}
+            onPress={() => handleSubmit()}
             style={styles.submitButton}
           >
             <Text>Upload</Text>
@@ -336,8 +334,10 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     width: 300,
-    margin: 12,
+    margin: 10,
     borderWidth: 1,
+    position: 'relative',
+    left: -10,
   },
   paraInput: {
     height: 80,
