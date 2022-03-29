@@ -178,6 +178,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
     // @ts-ignore
     copy.user = 'bigShaq';
     sendPost(copy);
+    navigation.navigate('Root', { screen: 'MapPage' });
   };
 
   return (
