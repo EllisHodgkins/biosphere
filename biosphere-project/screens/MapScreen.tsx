@@ -14,7 +14,7 @@ import * as React from 'react';
 import * as Location from 'expo-location';
 import { useState, useEffect, useRef } from 'react';
 import { getMarkers } from '../api/server';
-import { Modalize } from 'react-native-modalize';
+
 
 interface LocationState {
   latitude: number;
@@ -48,28 +48,10 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
   const [markers, setMarkers] = useState<Markers[] | []>([]);
   const [photo, setPhoto] = useState(false);
 
-  const modalizeRef = useRef<Modalize>(null);
-
-  const onOpen = () => {
-    modalizeRef.current?.open();
-  };
-
-  let base64Icon = '';
-
   useEffect(() => {
-    // @ts-ignore
-    if (route.params) {
-      // @ts-ignore
-      setPhoto(route.params);
-      base64Icon = 'data:image/png;base64,' + photo;
-      console.log(base64Icon);
-    }
+    getMarkers(location.latitude, location.longitude, 0.0922, 0.0421).then((response) => setMarkers(response));
+    // getMarkers(1, 2, 3, 4)
   }, [route]);
-
-  useEffect(() => {
-    // getMarkers(location.latitude, location.longitude, 0.0922, 0.0421)
-    getMarkers(1, 2, 3, 4).then((response) => setMarkers(response));
-  }, []);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -119,13 +101,6 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
             <View>
               <Text>{marker?.title}</Text>
               <Text>{marker?.description}</Text>
-
-              <TouchableOpacity onPress={onOpen}>
-                <Text>More Details</Text>
-              </TouchableOpacity>
-              <Modalize ref={modalizeRef}>
-                <Text>{marker?.description}</Text>
-              </Modalize>
             </View>
           </Callout>
         </Marker>
@@ -145,8 +120,8 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 53.480671, //location.latitude,
-          longitude: -2.23566, //location.longitude,
+          latitude: location.latitude,
+          longitude: location.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
