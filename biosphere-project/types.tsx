@@ -15,9 +15,9 @@ declare global {
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Pages: NavigatorScreenParams<PagesParamList>
   Modal: undefined;
   NotFound: undefined;
+  FullArticle: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
@@ -37,7 +37,6 @@ export type RootTabParamList = {
   MapPage: undefined;
   CameraPage: any;
   LibraryPage: undefined;
-
 };
 
 

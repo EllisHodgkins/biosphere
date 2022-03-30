@@ -42,7 +42,7 @@ interface Markers {
   long: number;
 }
 
-const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
+const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
   const [location, setLocation] = useState<LocationState | {}>({});
   const [isLoading, setIsLoading] = useState(true);
   const [markers, setMarkers] = useState<Markers[] | []>([]);
@@ -158,6 +158,9 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
       >
         {markers && generateMarkers()}
       </MapView>
+      <Button
+        title="full-article-test"
+        onPress={()=>{navigation.navigate('FullArticle')}}></Button>
     </View>
   );
 };
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
   map: {
     alignSelf: 'flex-start',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    height: Dimensions.get('window').height-200,
     zIndex: 0,
     elevation: 0,
   },

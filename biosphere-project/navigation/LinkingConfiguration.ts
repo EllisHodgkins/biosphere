@@ -4,36 +4,37 @@
  * https://reactnavigation.org/docs/configuring-links
  */
 
-import { LinkingOptions } from '@react-navigation/native';
-import * as Linking from 'expo-linking';
+import { LinkingOptions } from "@react-navigation/native";
+import * as Linking from "expo-linking";
 
-import { RootStackParamList } from '../types';
+import { RootStackParamList } from "../types";
 
 const linking: LinkingOptions<RootStackParamList> = {
-  prefixes: [Linking.makeUrl('/')],
+  prefixes: [Linking.makeUrl("/")],
   config: {
     screens: {
       Root: {
         screens: {
           MapPage: {
             screens: {
-              MapScreenPage: 'Map',
+              MapScreenPage: "Map",
             },
           },
           CameraPage: {
             screens: {
-              CameraScreenPage: 'Camera',
+              CameraScreenPage: "Camera",
             },
           },
           LibraryPage: {
             screens: {
-              ImageLibraryPage: 'three',
+              ImageLibraryPage: "three",
             },
           },
         },
       },
-      Modal: 'modal',
-      NotFound: '*',
+      Modal: "modal",
+      NotFound: "*",
+      FullArticle: "full-article",
     },
   },
 };

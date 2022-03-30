@@ -247,9 +247,9 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               }
             />
           </View>
-          <View style={styles.formContainer}>
             <Text>*Tags</Text>
             <DropDownPicker
+              style={styles.dropdownStyle}
               open={openTags}
               value={tags}
               items={tagList}
@@ -271,10 +271,10 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
                 '#e9c46a',
               ]}
             />
-          </View>
 
           <TextInput
             style={styles.paraInput}
+            editable={!openTags}
             placeholder="Description (Optional)"
             multiline={true}
             onChangeText={(e) =>
@@ -301,7 +301,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    height: Dimensions.get('window').height,
+    minHeight: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
     alignItems: 'center',
     justifyContent: 'center',
@@ -312,7 +312,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
   },
   title: {
     fontSize: 20,
@@ -343,7 +342,13 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: -1,
   },
+  dropdownStyle: {
+    height: 40,
+    width: 300,
+    right: -45,
+  },
   formContainer: {
+    minHeight: 100,
     width: 300,
   },
   submitButton: {

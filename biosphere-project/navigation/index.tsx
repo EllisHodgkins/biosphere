@@ -4,42 +4,42 @@
  *
  */
 
-import { useState } from 'react';
+import { useState } from "react";
 
 //Icons
-import { FontAwesome, MaterialIcons, Entypo } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons, Entypo } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
-} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { HeaderBackButton } from '@react-navigation/elements';
-import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { HeaderBackButton } from "@react-navigation/elements";
+import * as React from "react";
+import { ColorSchemeName, Pressable } from "react-native";
 
 // Custom properties from the template
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
+import Colors from "../constants/Colors";
+import useColorScheme from "../hooks/useColorScheme";
+import ModalScreen from "../screens/ModalScreen";
 
 // Screens
-import NotFoundScreen from '../screens/NotFoundScreen';
-import MapScreen from '../screens/MapScreen';
-import CameraScreen from '../screens/CameraScreen';
-import ImageLibrary from '../screens/ImageLibrary';
-import UploadPhoto from '../screens/UploadPhoto';
+import NotFoundScreen from "../screens/NotFoundScreen";
+import MapScreen from "../screens/MapScreen";
+import CameraScreen from "../screens/CameraScreen";
+import ImageLibrary from "../screens/ImageLibrary";
+import FullArticle from "../screens/FullArticle";
 
 import {
   RootStackParamList,
   RootTabParamList,
   RootTabScreenProps,
   PagesParamList,
-} from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
+} from "../types";
+import LinkingConfiguration from "./LinkingConfiguration";
 
 export default function Navigation({
   colorScheme,
@@ -49,7 +49,7 @@ export default function Navigation({
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      theme={colorScheme === "dark" ? DarkTheme : DefaultTheme}
     >
       <RootNavigator />
     </NavigationContainer>
@@ -59,7 +59,9 @@ export default function Navigation({
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
+ *
  */
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
@@ -73,16 +75,20 @@ function RootNavigator() {
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
-        options={{ title: 'Oops!' }}
+        options={{ title: "Oops!" }}
       />
 
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+      <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen
           name="Modal"
           component={ModalScreen}
           options={({ navigation }) => ({
-            title: 'Upload',
+            title: "Upload",
           })}
+        />
+        <Stack.Screen
+          name="FullArticle"
+          component={FullArticle}
         />
       </Stack.Group>
     </Stack.Navigator>
@@ -110,15 +116,15 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="MapPage"
         component={MapScreen}
-        options={({ navigation }: RootTabScreenProps<'MapPage'>) => ({
-          title: 'Map',
+        options={({ navigation }: RootTabScreenProps<"MapPage">) => ({
+          title: "Map",
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="map-marked" size={24} color={color} />
           ),
 
           headerRight: () => (
             <Pressable
-              onPress={() => navigation.navigate('Modal')}
+              onPress={() => navigation.navigate("Modal")}
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
               })}
@@ -132,7 +138,7 @@ function BottomTabNavigator() {
         // component={() => <CameraScreen clicked={1}/>}
         initialParams={{ test: false }}
         options={{
-          title: 'Take a photo',
+          title: "Take a photo",
           tabBarIcon: ({ color }) => (
             <Entypo name="camera" size={24} color={color} />
           ),
@@ -155,7 +161,7 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="LibraryPage"
         options={{
-          title: 'Choose a photo',
+          title: "Choose a photo",
           tabBarIcon: ({ color }) => (
             <MaterialIcons name="add-photo-alternate" size={24} color={color} />
           ),
@@ -178,26 +184,11 @@ function BottomTabNavigator() {
   );
 }
 
-// const PageStack = createNativeStackNavigator<PagesParamList>()
-// function NativeStackNavigator({ navigation: {setParams}, navigation }) {
-
-//   return (
-//     <PageStack.Navigator
-//       initialRouteName="UploadPhoto"
-//     >
-//       <PageStack.Screen
-//         name="UploadPhoto"
-//         component={UploadPhoto}
-//       />
-//     </PageStack.Navigator>
-//   )
-// }
-
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+  name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
