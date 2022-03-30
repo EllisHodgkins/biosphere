@@ -1,10 +1,10 @@
-import axios from "axios";
-import key from "./.key";
+import axios from 'axios';
+import key from './.key';
 
 const graphQLEndpoint =
-  "https://eu-west-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-xlzdn/graphql";
+  'https://eu-west-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-xlzdn/graphql';
 const headers = {
-  "content-type": "application/json",
+  'content-type': 'application/json',
   apiKey: `${key}`,
 };
 
@@ -16,7 +16,7 @@ const getMarkers = (lat, long, latDelta, longDelta) => {
 
   return axios({
     url: graphQLEndpoint,
-    method: "post",
+    method: 'post',
     headers: headers,
     data: {
       query: `
@@ -72,7 +72,7 @@ const sendPost = (post) => {
 
   axios({
     url: graphQLEndpoint,
-    method: "post",
+    method: 'post',
     headers: headers,
     data: {
       query: `
@@ -106,11 +106,40 @@ const sendPost = (post) => {
     },
   })
     .then((result) => {
-      console.log(result.data, "axios return");
+      console.log(result.data, 'axios return');
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-export { sendPost, getMarkers };
+const getSingleMarkerInfo = (marker) => {
+  const markerId = `"${marker.id}"`;
+  return axios({
+    url: graphQLEndpoint,
+    method: 'post',
+    headers: headers,
+    data: {
+      query: `
+             query{
+    geoTagDatum(query: {_id: ${markerId}}) {
+      _id
+      captured
+      category
+      description
+      image
+      lat
+      likes
+      long
+      title
+      user
+      tags
+    }}
+         `,
+    },
+  })
+    .then((result) => result.data.data.geoTagDatum)
+    .catch((err) => console.log(err));
+};
+
+export { sendPost, getMarkers, getSingleMarkerInfo };

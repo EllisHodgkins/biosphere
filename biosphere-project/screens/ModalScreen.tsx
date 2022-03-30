@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import {
-  Platform,
   StyleSheet,
   TextInput,
   Pressable,
@@ -10,11 +9,8 @@ import {
   SafeAreaView,
   Dimensions,
   KeyboardAvoidingView,
-  ScrollView,
 } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { Text, View } from '../components/Themed';
-import CustomMultiPicker from 'react-native-multiple-select-list';
 import * as Location from 'expo-location';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
