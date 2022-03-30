@@ -14,7 +14,7 @@ import * as React from 'react';
 import * as Location from 'expo-location';
 import { useState, useEffect, useRef } from 'react';
 import { getMarkers } from '../api/server';
-import { Modalize } from 'react-native-modalize';
+
 
 interface LocationState {
   latitude: number;
@@ -47,12 +47,6 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [markers, setMarkers] = useState<Markers[] | []>([]);
   const [photo, setPhoto] = useState(false);
-
-  const modalizeRef = useRef<Modalize>(null);
-
-  const onOpen = () => {
-    modalizeRef.current?.open();
-  };
 
   useEffect(() => {
     getMarkers(location.latitude, location.longitude, 0.0922, 0.0421).then((response) => setMarkers(response));
@@ -107,13 +101,6 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
             <View>
               <Text>{marker?.title}</Text>
               <Text>{marker?.description}</Text>
-
-              <TouchableOpacity onPress={onOpen}>
-                <Text>More Details</Text>
-              </TouchableOpacity>
-              <Modalize ref={modalizeRef}>
-                <Text>{marker?.description}</Text>
-              </Modalize>
             </View>
           </Callout>
         </Marker>
