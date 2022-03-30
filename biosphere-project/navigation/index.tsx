@@ -83,7 +83,7 @@ function RootNavigator() {
           name="Modal"
           component={ModalScreen}
           options={({ navigation }) => ({
-            title: "Upload",
+            title: "Back",
           })}
         />
         <Stack.Screen
