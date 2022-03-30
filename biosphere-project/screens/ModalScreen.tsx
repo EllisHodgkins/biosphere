@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as Location from 'expo-location';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
+import { Entypo, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { sendPost } from '../api/server';
 
@@ -132,7 +132,11 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
             })
           }
           style={styles.backButton}
-        />
+        >
+          <AntDesign
+          name="arrowleft"
+          size={25} />
+        </Pressable>
       ),
     });
   }, [navigation]);
@@ -320,8 +324,8 @@ const styles = StyleSheet.create({
   },
   backButton: {
     width: 50,
-    height: 30,
-    backgroundColor: 'green',
+    height: 35,
+    justifyContent: "center",
   },
   userImage: {
     width: 250,

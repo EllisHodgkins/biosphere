@@ -12,7 +12,6 @@ import {
   import * as Location from 'expo-location';
   import { useState, useEffect, useRef } from 'react';
   import { getMarkers } from '../api/server';
-  import { Modalize } from 'react-native-modalize';
 
   interface ArticleProps {
       navigation: any,
