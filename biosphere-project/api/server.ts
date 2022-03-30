@@ -1,6 +1,7 @@
 import axios from 'axios';
 import key from './.key';
 
+
 const graphQLEndpoint =
   'https://eu-west-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-xlzdn/graphql';
 const headers = {
@@ -63,12 +64,8 @@ const sendPost = (post) => {
   const mgLong = `"${post.longitude}"`;
   const mgTitle = `"${post.title}"`;
   const mgUser = `"${post.user}"`;
-  const mgTags = [];
-  post.tags.forEach((tag) => {
-    mgTags.push(`"${tag}"`);
-  });
 
-  // console.log(mgTags);
+  console.log(JSON.stringify(post.tags));
 
   axios({
     url: graphQLEndpoint,
@@ -87,7 +84,7 @@ const sendPost = (post) => {
                     long: ${mgLong},
                     title: ${mgTitle},
                     user: ${mgUser},
-                    tags: ${mgTags}
+                    tags: ${JSON.stringify(post.tags)}
                 },
                 ) {
                 _id
