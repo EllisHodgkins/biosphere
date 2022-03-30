@@ -1,20 +1,27 @@
 import { ToastAndroid } from 'react-native';
 import { Text, View } from '../components/Themed';
 import * as ImagePicker from 'expo-image-picker';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 interface Props {
   navigation: any;
   libraryVisible: boolean;
   setLibraryVisible: Function;
+  route: object;
 }
 
 const TakePhoto: React.FC<Props> = ({
   navigation,
   libraryVisible,
   setLibraryVisible,
+  route,
 }) => {
-  const [image, setImage] = useState({});
+  useEffect(() => {
+    // @ts-ignore
+    if (route.params) {
+      setLibraryVisible(true);
+    }
+  }, [route]);
 
   useEffect(() => {
     if (libraryVisible) {
@@ -37,7 +44,6 @@ const TakePhoto: React.FC<Props> = ({
         })
         .then((result) => {
           if (!result.cancelled) {
-            setImage(result);
             navigation.navigate('Modal', {
               params: result,
             });
@@ -53,11 +59,7 @@ const TakePhoto: React.FC<Props> = ({
     }
   }, [libraryVisible]);
 
-  return (
-    <View>
-      <Text>Loading camera...</Text>
-    </View>
-  );
+  return <></>;
 };
 
 export default TakePhoto;

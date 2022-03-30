@@ -1,11 +1,19 @@
-import { Text, View, ToastAndroid, StyleSheet, ScrollView, Image, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  ToastAndroid,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import { Dimensions, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker, Callout } from 'react-native-maps';
 import * as React from 'react';
 import * as Location from 'expo-location';
 import { useState, useEffect, useRef } from 'react';
-import { getMarkers } from '../api/server'
+import { getMarkers } from '../api/server';
 import { Modalize } from 'react-native-modalize';
 
 interface LocationState {
@@ -15,6 +23,8 @@ interface LocationState {
 
 interface MapProps {
   navigation: any;
+  route: object;
+  image?: object;
 }
 
 interface Markers {
@@ -35,7 +45,7 @@ interface Markers {
 const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
   const [location, setLocation] = useState<LocationState | {}>({});
   const [isLoading, setIsLoading] = useState(true);
-  const [markers, setMarkers] = useState<Markers[] | []>([])
+  const [markers, setMarkers] = useState<Markers[] | []>([]);
   const [photo, setPhoto] = useState(false);
 
   const modalizeRef = useRef<Modalize>(null);
@@ -44,25 +54,22 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
     modalizeRef.current?.open();
   };
 
-  let base64Icon = ''
+  let base64Icon = '';
 
   useEffect(() => {
     // @ts-ignore
     if (route.params) {
       // @ts-ignore
-      setPhoto(route.params)
-      base64Icon = 'data:image/png;base64,' + photo
-      console.log(base64Icon)
+      setPhoto(route.params);
+      base64Icon = 'data:image/png;base64,' + photo;
+      console.log(base64Icon);
     }
-
-  }, [route])
+  }, [route]);
 
   useEffect(() => {
     // getMarkers(location.latitude, location.longitude, 0.0922, 0.0421)
-    getMarkers(1, 2, 3, 4)
-      .then(response => setMarkers(response))
-  }, [])
-
+    getMarkers(1, 2, 3, 4).then((response) => setMarkers(response));
+  }, []);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -112,6 +119,7 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
             <View>
               <Text>{marker?.title}</Text>
               <Text>{marker?.description}</Text>
+
               <TouchableOpacity onPress={onOpen}>
                 <Text>More Details</Text>
               </TouchableOpacity>
@@ -121,9 +129,9 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
             </View>
           </Callout>
         </Marker>
-      )
-    })
-  }
+      );
+    });
+  };
 
   if (isLoading)
     return (
@@ -138,7 +146,7 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
         style={styles.map}
         initialRegion={{
           latitude: 53.480671, //location.latitude,
-          longitude: -2.235660, //ocation.longitude,
+          longitude: -2.23566, //location.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -147,7 +155,6 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
         showsCompass={true}
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
-
       >
         {markers && generateMarkers()}
       </MapView>

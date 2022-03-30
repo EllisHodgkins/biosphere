@@ -2,33 +2,10 @@ import axios from 'axios';
 import key from './.key';
 
 const graphQLEndpoint =
-   'https://eu-west-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-xlzdn/graphql';
+  'https://eu-west-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-xlzdn/graphql';
 const headers = {
-   'content-type': 'application/json',
-   apiKey: `${key}`,
-};
-
-const sendPost = (base64: string) => {
-   axios({
-      url: graphQLEndpoint,
-      method: 'post',
-      headers: headers,
-      data: {
-         query: `
-            mutation {
-            insertOneImage(data: {base64: "${base64}"}) {
-              _id
-              base64
-                }
-              }`,
-      },
-   })
-      .then((result) => {
-         //   console.log(result.data, "axios return");
-      })
-      .catch((err) => {
-         console.log(err);
-      });
+  'content-type': 'application/json',
+  apiKey: `${key}`,
 };
 
 const getMarkers = (lat, long, latDelta, longDelta) => {
@@ -39,7 +16,7 @@ const getMarkers = (lat, long, latDelta, longDelta) => {
 
   return axios({
     url: graphQLEndpoint,
-    method: "post",
+    method: 'post',
     headers: headers,
     data: {
       query: `
@@ -61,34 +38,108 @@ const getMarkers = (lat, long, latDelta, longDelta) => {
        `,
     },
   })
-  .then((result) => result.data.data.geoTagData)
-  .catch((err) => console.log(err));
+    .then((result) => result.data.data.geoTagData)
+    .catch((err) => console.log(err));
 };
 
-// const getGeo = async () => {
-//   return axios({
-//       url: graphQLEndpoint,
-//       headers: headers,
-//      method: 'post',
-//      data: {
-//         query: `
-//            query {
-//               geoTagData {
-//               title
-//               location {
-//                  lat
-//                  long
-//                  }
-//               }
-//            }
-//         `,
-//      },
-//   })
-//      .then(response => {
-//         console.log(response.data.data.geoTagData);
-//         return response.data.data.geoTagData;
-//      })
-//      .catch(err => console.log(err));
-// };
+const sendPost = (post) => {
+  // console.log(
+  //   post.captured,
+  //   post.category,
+  //   post.description,
+  //   post.image,
+  //   post.latitude,
+  //   post.longitude,
+  //   post.title,
+  //   post.user,
+  //   post.tags,
+  //   "inputs"
+  // );
+  const mgTimeStamp = `"${post.captured}"`;
+  const mgCategory = `"${post.category}"`;
+  const mgDescription = `"${post.description}"`;
+  const mgImage = `"${post.image}"`;
+  const mgLat = `"${post.latitude}"`;
+  const mgLong = `"${post.longitude}"`;
+  const mgTitle = `"${post.title}"`;
+  const mgUser = `"${post.user}"`;
+  const mgTags = [];
+  post.tags.forEach((tag) => {
+    mgTags.push(`"${tag}"`);
+  });
 
-export { sendPost, getMarkers }
+  // console.log(mgTags);
+
+  axios({
+    url: graphQLEndpoint,
+    method: 'post',
+    headers: headers,
+    data: {
+      query: `
+            mutation {
+                insertOneGeoTagDatum(
+                data: {
+                    captured: ${mgTimeStamp},
+                    category: ${mgCategory},
+                    description: ${mgDescription},
+                    image: ${mgImage},
+                    lat: ${mgLat},
+                    long: ${mgLong},
+                    title: ${mgTitle},
+                    user: ${mgUser},
+                    tags: ${mgTags}
+                },
+                ) {
+                _id
+                captured
+                category
+                description
+                image
+                lat
+                long
+                title
+                user
+                tags
+                }
+            }
+              `,
+    },
+  })
+    .then((result) => {
+      console.log(result.data, 'axios return');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+const getSingleMarkerInfo = (marker) => {
+  const markerId = `"${marker.id}"`;
+  return axios({
+    url: graphQLEndpoint,
+    method: 'post',
+    headers: headers,
+    data: {
+      query: `
+             query{
+    geoTagDatum(query: {_id: ${markerId}}) {
+      _id
+      captured
+      category
+      description
+      image
+      lat
+      likes
+      long
+      title
+      user
+      tags
+    }}
+         `,
+    },
+  })
+    .then((result) => result.data.data.geoTagDatum)
+    .catch((err) => console.log(err));
+};
+
+export { sendPost, getMarkers, getSingleMarkerInfo };

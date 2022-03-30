@@ -16,13 +16,12 @@ const TakePhoto: React.FC<Props> = ({
   setCameraVisible,
   route,
 }) => {
-  // console.log(route);
-  // console.log(navigation.state)
-
-  // if (route.params?.cameraOn) {
-  //   console.log('route')
-  //   cameraVisible = true
-  // }
+  useEffect(() => {
+    // @ts-ignore
+    if (route.params) {
+      setCameraVisible(true);
+    }
+  }, [route]);
 
   useEffect(() => {
     if (cameraVisible) {
