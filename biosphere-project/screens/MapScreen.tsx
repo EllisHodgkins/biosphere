@@ -54,21 +54,9 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
     modalizeRef.current?.open();
   };
 
-  let base64Icon = '';
-
   useEffect(() => {
-    // @ts-ignore
-    if (route.params) {
-      // @ts-ignore
-      setPhoto(route.params);
-      base64Icon = 'data:image/png;base64,' + photo;
-      console.log(base64Icon);
-    }
-  }, [route]);
-
-  useEffect(() => {
-    // getMarkers(location.latitude, location.longitude, 0.0922, 0.0421)
-    getMarkers(1, 2, 3, 4).then((response) => setMarkers(response));
+    getMarkers(location.latitude, location.longitude, 0.0922, 0.0421).then((response) => setMarkers(response));
+    // getMarkers(1, 2, 3, 4)
   }, [route]);
 
   useEffect(() => {
@@ -145,8 +133,8 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 53.480671, //location.latitude,
-          longitude: -2.23566, //location.longitude,
+          latitude: location.latitude,
+          longitude: location.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}

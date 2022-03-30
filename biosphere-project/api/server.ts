@@ -10,10 +10,10 @@ const headers = {
 };
 
 const getMarkers = (lat, long, latDelta, longDelta) => {
-  const latMin = `"53.388471"`; // <=== `"${lat - latDelta}"`;
-  const latMax = `"53.572871"`; // <=== `"${lat + latDelta}"`;
-  const longMin = `"-2.27776"`; // <=== `"${long - longDelta}"`;
-  const longMax = `"-2.19356"`; // <=== `"${long + longDelta}"`;
+  const latMin = `"${lat - latDelta}"`;
+  const latMax = `"${lat + latDelta}"`;
+  const longMin = `"${long - longDelta}"`;
+  const longMax = `"${long + longDelta}"`;
 
   return axios({
     url: graphQLEndpoint,
@@ -44,18 +44,6 @@ const getMarkers = (lat, long, latDelta, longDelta) => {
 };
 
 const sendPost = (post) => {
-  // console.log(
-  //   post.captured,
-  //   post.category,
-  //   post.description,
-  //   post.image,
-  //   post.latitude,
-  //   post.longitude,
-  //   post.title,
-  //   post.user,
-  //   post.tags,
-  //   "inputs"
-  // );
   const mgTimeStamp = `"${post.captured}"`;
   const mgCategory = `"${post.category}"`;
   const mgDescription = `"${post.description}"`;

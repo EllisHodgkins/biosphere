@@ -36,7 +36,6 @@
     "react-native-get-location": "^2.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-maps": "0.29.4",
-    "react-native-modalize": "^2.0.13",
     "react-native-multiple-select-list": "^1.0.4",
     "react-native-paper": "^4.11.2",
     "react-native-safe-area-context": "3.3.2",
