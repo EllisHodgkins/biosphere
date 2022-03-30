@@ -59,13 +59,12 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
 
   console.log(Object.keys(article))
 
+  const mapRef = useRef(null);
+
   useEffect(() => {
-    getMarkers(mancLat, mancLong, 0.0922, 0.0421).then((response) =>
-      setMarkers(response)
-    );
-    // getMarkers(location.latitude, location.longitude, 0.0922, 0.0421).then((response) => setMarkers(response));
+    getMarkers(location.latitude, location.longitude, location.latitudeDelta, location.longitudeDelta).then((response) => setMarkers(response));
     // getMarkers(1, 2, 3, 4)
-  }, [route]);
+  }, [location]);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -136,6 +135,7 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
         <Text>Loading...</Text>
       </View>
     );
+  
 if(isInfo) {
   return (
     <View style={styles.container}>
@@ -183,14 +183,19 @@ if(isInfo) {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        ref={mapRef}
         showsUserLocation={true}
         followsUserLocation={true}
         showsCompass={true}
+        onRegionChangeComplete={(region) => setLocation(region)}
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
       >
         {markers && generateMarkers()}
       </MapView>
+      <Button
+        title="refresh"
+        onPress={ ()=> console.log(mapRef.current.addressForCoordinate(location))}></Button>
     </View>
   );
 }
