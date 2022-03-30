@@ -57,12 +57,17 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
   const [isInfo, setIsInfo] = useState(false);
   const [article, setArticle] = useState({});
 
-  console.log(Object.keys(article))
+  console.log(Object.keys(article));
 
   const mapRef = useRef(null);
 
   useEffect(() => {
-    getMarkers(location.latitude, location.longitude, location.latitudeDelta, location.longitudeDelta).then((response) => setMarkers(response));
+    getMarkers(
+      location.latitude,
+      location.longitude,
+      location.latitudeDelta,
+      location.longitudeDelta
+    ).then((response) => setMarkers(response));
     // getMarkers(1, 2, 3, 4)
   }, [location]);
 
@@ -105,9 +110,10 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
     return markers.map((marker, index) => {
       return (
         <Marker
-          onPress={()=>{
-            setArticle(marker)
-            setIsInfo(true)}}
+          onPress={() => {
+            setArticle(marker);
+            setIsInfo(true);
+          }}
           key={index}
           coordinate={{ latitude: +marker?.lat, longitude: +marker?.long }}
           title={marker?.title}
@@ -135,71 +141,86 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
         <Text>Loading...</Text>
       </View>
     );
-  
-if(isInfo) {
-  return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          // latitude: location.latitude,
-          // longitude: location.longitude,
-          latitude: 53.4808,
-          longitude: -2.2426,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        showsCompass={true}
-        userLocationUpdateInterval={60000}
-        userLocationFastestInterval={60000}
-      >
-        {markers && generateMarkers()}
-      </MapView>
+
+  if (isInfo) {
+    return (
+      <View style={styles.container}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            // latitude: location.latitude,
+            // longitude: location.longitude,
+            latitude: 53.4808,
+            longitude: -2.2426,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          showsCompass={true}
+          userLocationUpdateInterval={60000}
+          userLocationFastestInterval={60000}
+        >
+          {markers && generateMarkers()}
+        </MapView>
         <ScrollView style={styles.articleScroll}>
-        <View style={styles.articleExitBar}>
-          <Entypo name='cross' size={30} onPress={()=>{setIsInfo(false)}} />
-        </View>
-        <Text>{article.title}</Text>
-        <Text>{article.user}</Text>
-        <Text>{article.category}</Text>
-        {/* <Text>{article.likes}</Text> */}
-        <Image style={{height: 200, width: 200}} source={{uri: article.image}}/>
-        <Text>{article.description}</Text>
+          <View style={styles.articleExitBar}>
+          <Text style={styles.articleTitle}>{article.title}</Text>
+            <Entypo
+              name="cross"
+              size={30}
+              onPress={() => {
+                setIsInfo(false);
+              }}
+            />
+          </View>
+          <View style={styles.articleSubInfo}>
+            <Text>{article.user}</Text>
+            <Text>{article.category}</Text>
+          </View>
+          {/* <Text>{article.likes}</Text> */}
+          <View style={styles.articleImageDesc}>
+          <Image
+            style={{ height: 200, width: 200, marginLeft: 10 }}
+            source={{ uri: article.image }}
+          />
+          <Text style={{flex: 1, flexWrap: 'wrap', marginLeft: 10, marginRight: 10}}>{article.description}</Text>
+          </View>
         </ScrollView>
-    </View>
-  );
-} else {
-  return (
-    <View style={styles.container}>
-      <MapView
-        style={styles.mapFull}
-        initialRegion={{
-          // latitude: location.latitude,
-          // longitude: location.longitude,
-          latitude: 53.4808,
-          longitude: -2.2426,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        ref={mapRef}
-        showsUserLocation={true}
-        followsUserLocation={true}
-        showsCompass={true}
-        onRegionChangeComplete={(region) => setLocation(region)}
-        userLocationUpdateInterval={60000}
-        userLocationFastestInterval={60000}
-      >
-        {markers && generateMarkers()}
-      </MapView>
-      <Button
-        title="refresh"
-        onPress={ ()=> console.log(mapRef.current.addressForCoordinate(location))}></Button>
-    </View>
-  );
-}
-  
+      </View>
+    );
+  } else {
+    return (
+      <View style={styles.container}>
+        <MapView
+          style={styles.mapFull}
+          initialRegion={{
+            // latitude: location.latitude,
+            // longitude: location.longitude,
+            latitude: 53.4808,
+            longitude: -2.2426,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          ref={mapRef}
+          showsUserLocation={true}
+          followsUserLocation={true}
+          showsCompass={true}
+          onRegionChangeComplete={(region) => setLocation(region)}
+          userLocationUpdateInterval={60000}
+          userLocationFastestInterval={60000}
+        >
+          {markers && generateMarkers()}
+        </MapView>
+        <Button
+          title="refresh"
+          onPress={() =>
+            console.log(mapRef.current.addressForCoordinate(location))
+          }
+        ></Button>
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -223,15 +244,38 @@ const styles = StyleSheet.create({
     zIndex: 0,
     elevation: 0,
   },
+  articleTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  articleSubInfo: {
+    flexDirection: 'row',
+    alignContent: 'flex-start',
+    justifyContent: 'space-between',
+    width: 125,
+    fontSize: 8,
+    paddingBottom: 20,
+    paddingLeft: 10,
+  },
   articleScroll: {
     // alignSelf: "flex-end",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.55,
+    backgroundColor: '#C1E1C1',
   },
   articleExitBar: {
-    flexDirection: 'row-reverse',
-    height: 25,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: 35,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
+    backgroundColor: '#ffff99',
   },
+  articleImageDesc: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  }
 });
 
 export default MainMap;
