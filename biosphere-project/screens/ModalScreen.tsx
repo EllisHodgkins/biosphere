@@ -128,6 +128,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={() =>
             navigation.navigate('Root', {
               screen: 'MapPage',
+              params: true
             })
           }
           style={styles.backButton}
@@ -171,7 +172,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
     // @ts-ignore
     copy.user = 'bigShaq';
     sendPost(copy);
-    navigation.navigate('Root', { screen: 'MapPage' });
+    navigation.navigate('Root', { screen: 'MapPage', params: true });
   };
 
   return (

@@ -69,7 +69,7 @@ const MainMap: React.FC<MapProps> = ({ image, route, navigation }) => {
   useEffect(() => {
     // getMarkers(location.latitude, location.longitude, 0.0922, 0.0421)
     getMarkers(1, 2, 3, 4).then((response) => setMarkers(response));
-  }, []);
+  }, [route]);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
