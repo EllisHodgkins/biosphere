@@ -48,10 +48,12 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
   const [markers, setMarkers] = useState<Markers[] | []>([]);
   const [photo, setPhoto] = useState(false);
 
+  const mapRef = useRef(null);
+
   useEffect(() => {
-    getMarkers(location.latitude, location.longitude, 0.0922, 0.0421).then((response) => setMarkers(response));
+    getMarkers(location.latitude, location.longitude, location.latitudeDelta, location.longitudeDelta).then((response) => setMarkers(response));
     // getMarkers(1, 2, 3, 4)
-  }, [route]);
+  }, [location]);
 
   useEffect(() => {
     Location.requestForegroundPermissionsAsync()
@@ -115,6 +117,8 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
       </View>
     );
 
+  
+      
   return (
     <View style={styles.container}>
       <MapView
@@ -125,17 +129,19 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        ref={mapRef}
         showsUserLocation={true}
         followsUserLocation={true}
         showsCompass={true}
+        onRegionChangeComplete={(region) => setLocation(region)}
         userLocationUpdateInterval={60000}
         userLocationFastestInterval={60000}
       >
         {markers && generateMarkers()}
       </MapView>
       <Button
-        title="full-article-test"
-        onPress={()=>{navigation.navigate('FullArticle')}}></Button>
+        title="refresh"
+        onPress={ ()=> console.log(mapRef.current.addressForCoordinate(location))}></Button>
     </View>
   );
 };
