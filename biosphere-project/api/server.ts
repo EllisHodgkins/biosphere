@@ -1,7 +1,6 @@
 import axios from 'axios';
 import key from './.key';
 
-
 const graphQLEndpoint =
   'https://eu-west-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-xlzdn/graphql';
 const headers = {
@@ -31,10 +30,10 @@ const getMarkers = (lat, long, latDelta, longDelta) => {
              description
              image
              lat
-             likes
              long
              title
              user
+             tags
            }}
        `,
     },
@@ -114,7 +113,6 @@ const getSingleMarkerInfo = (marker) => {
       description
       image
       lat
-      likes
       long
       title
       user

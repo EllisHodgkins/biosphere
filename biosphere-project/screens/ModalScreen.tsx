@@ -128,14 +128,12 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={() =>
             navigation.navigate('Root', {
               screen: 'MapPage',
-              params: true
+              params: true,
             })
           }
           style={styles.backButton}
         >
-          <AntDesign
-          name="arrowleft"
-          size={25} />
+          <AntDesign name="arrowleft" size={25} />
         </Pressable>
       ),
     });
@@ -252,30 +250,30 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               }
             />
           </View>
-            <Text>*Tags</Text>
-            <DropDownPicker
-              style={styles.dropdownStyle}
-              open={openTags}
-              value={tags}
-              items={tagList}
-              setOpen={setOpenTags}
-              setValue={setTags}
-              setItems={setTagList}
-              zIndex={10}
-              zIndexInverse={10}
-              theme="LIGHT"
-              multiple={true}
-              mode="BADGE"
-              badgeDotColors={[
-                '#e76f51',
-                '#00b4d8',
-                '#e9c46a',
-                '#e76f51',
-                '#8ac926',
-                '#00b4d8',
-                '#e9c46a',
-              ]}
-            />
+          <Text>*Tags</Text>
+          <DropDownPicker
+            style={styles.dropdownStyle}
+            open={openTags}
+            value={tags}
+            items={tagList}
+            setOpen={setOpenTags}
+            setValue={setTags}
+            setItems={setTagList}
+            zIndex={10}
+            zIndexInverse={10}
+            theme="LIGHT"
+            multiple={true}
+            mode="BADGE"
+            badgeDotColors={[
+              '#e76f51',
+              '#00b4d8',
+              '#e9c46a',
+              '#e76f51',
+              '#8ac926',
+              '#00b4d8',
+              '#e9c46a',
+            ]}
+          />
 
           <TextInput
             style={styles.paraInput}
@@ -291,9 +289,9 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
             }
           />
           <Pressable
-            // disabled={isDisabled}
+            disabled={isDisabled}
             onPress={() => handleSubmit()}
-            style={styles.submitButton}
+            style={isDisabled ? styles.buttonDisabled : styles.submitButton}
           >
             <Text>Upload</Text>
           </Pressable>
@@ -325,9 +323,10 @@ const styles = StyleSheet.create({
   backButton: {
     width: 50,
     height: 35,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   userImage: {
+    alignSelf: 'center',
     width: 250,
     height: 250,
   },
@@ -379,6 +378,19 @@ const styles = StyleSheet.create({
   },
   iconStyle: {
     padding: 30,
+  },
+  buttonDisabled: {
+    opacity: 0.5,
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 100,
+    height: 35,
+    borderRadius: 75,
+    borderColor: 'black',
+    borderWidth: 3,
+    position: 'relative',
+    zIndex: -1,
   },
 });
 
