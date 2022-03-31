@@ -15,6 +15,11 @@ import * as Location from 'expo-location';
 import { Entypo, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { sendPost } from '../api/server';
+import {
+  useFonts,
+  RobotoCondensed_400Regular,
+  RobotoCondensed_700Bold,
+} from '@expo-google-fonts/roboto-condensed';
 
 interface PostData {
   longitude: number;
@@ -33,6 +38,11 @@ interface Props {
 }
 
 const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
+  let [fontsLoaded] = useFonts({
+    RobotoCondensed_400Regular,
+    RobotoCondensed_700Bold,
+  });
+
   const [openTags, setOpenTags] = useState(false);
   const [openCategories, setOpenCategories] = useState(false);
 
@@ -128,14 +138,12 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={() =>
             navigation.navigate('Root', {
               screen: 'MapPage',
-              params: true
+              params: true,
             })
           }
           style={styles.backButton}
         >
-          <AntDesign
-          name="arrowleft"
-          size={25} />
+          <AntDesign name="arrowleft" size={25} />
         </Pressable>
       ),
     });
@@ -152,9 +160,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
       // @ts-ignore
       postData.image &&
       // @ts-ignore
-      category &&
-      // @ts-ignore
-      tags
+      category
     ) {
       setIsDisabled(false);
     }
@@ -184,7 +190,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
       <KeyboardAvoidingView behavior={'padding'}>
         <View style={styles.container}>
           <View style={styles.formContainer}>
-            <Text>*Category</Text>
+            <Text style={styles.category}>*Category</Text>
 
             <DropDownPicker
               open={openCategories}
@@ -238,7 +244,7 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               </View>
             )}
 
-            <Text>*Title</Text>
+            <Text style={styles.titleText}>*Title</Text>
             <TextInput
               style={styles.input}
               editable={!openTags}
@@ -252,30 +258,30 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
               }
             />
           </View>
-            <Text>*Tags</Text>
-            <DropDownPicker
-              style={styles.dropdownStyle}
-              open={openTags}
-              value={tags}
-              items={tagList}
-              setOpen={setOpenTags}
-              setValue={setTags}
-              setItems={setTagList}
-              zIndex={10}
-              zIndexInverse={10}
-              theme="LIGHT"
-              multiple={true}
-              mode="BADGE"
-              badgeDotColors={[
-                '#e76f51',
-                '#00b4d8',
-                '#e9c46a',
-                '#e76f51',
-                '#8ac926',
-                '#00b4d8',
-                '#e9c46a',
-              ]}
-            />
+          <Text style={styles.tagText}>Tags</Text>
+          <DropDownPicker
+            style={styles.dropdownStyle}
+            open={openTags}
+            value={tags}
+            items={tagList}
+            setOpen={setOpenTags}
+            setValue={setTags}
+            setItems={setTagList}
+            zIndex={10}
+            zIndexInverse={10}
+            theme="LIGHT"
+            multiple={true}
+            mode="BADGE"
+            badgeDotColors={[
+              '#e76f51',
+              '#00b4d8',
+              '#e9c46a',
+              '#e76f51',
+              '#8ac926',
+              '#00b4d8',
+              '#e9c46a',
+            ]}
+          />
 
           <TextInput
             style={styles.paraInput}
@@ -291,9 +297,9 @@ const ModalScreen: React.FC<Props> = ({ navigation, route }) => {
             }
           />
           <Pressable
-            // disabled={isDisabled}
+            disabled={isDisabled}
             onPress={() => handleSubmit()}
-            style={styles.submitButton}
+            style={isDisabled ? styles.buttonDisabled : styles.submitButton}
           >
             <Text>Upload</Text>
           </Pressable>
@@ -310,6 +316,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#353A47',
   },
   boxContainer: {
     flex: 1,
@@ -317,6 +324,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#353A47',
   },
   title: {
     fontSize: 20,
@@ -325,11 +333,13 @@ const styles = StyleSheet.create({
   backButton: {
     width: 50,
     height: 35,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   userImage: {
+    alignSelf: 'center',
     width: 250,
     height: 250,
+    margin: 10,
   },
   input: {
     height: 40,
@@ -338,6 +348,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     position: 'relative',
     left: -10,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 10,
   },
   paraInput: {
     height: 80,
@@ -346,17 +359,48 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     zIndex: -1,
+    backgroundColor: 'white',
+    borderRadius: 10,
   },
   dropdownStyle: {
     height: 40,
     width: 300,
-    right: -45,
+    alignSelf: 'center',
   },
   formContainer: {
     minHeight: 100,
     width: 300,
+    backgroundColor: '#353A47',
   },
   submitButton: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 100,
+    height: 35,
+    borderRadius: 75,
+    borderColor: 'black',
+    borderWidth: 1,
+    position: 'relative',
+    zIndex: -1,
+    backgroundColor: '#F9F8F8',
+  },
+  placeHolder: {
+    backgroundColor: '#F9F8F8',
+    alignSelf: 'center',
+    height: 250,
+    width: 250,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 10,
+  },
+  iconStyle: {
+    padding: 30,
+    color: '#353A47',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -368,17 +412,20 @@ const styles = StyleSheet.create({
     position: 'relative',
     zIndex: -1,
   },
-  placeHolder: {
-    backgroundColor: 'grey',
-    alignSelf: 'center',
-    height: 250,
-    width: 250,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+  category: {
+    fontFamily: 'RobotoCondensed_400Regular',
+    color: '#F9F8F8',
+    marginBottom: 10,
   },
-  iconStyle: {
-    padding: 30,
+  titleText: {
+    fontFamily: 'RobotoCondensed_400Regular',
+    color: '#F9F8F8',
+  },
+  tagText: {
+    fontFamily: 'RobotoCondensed_400Regular',
+    color: '#F9F8F8',
+    right: 135,
+    marginBottom: 10,
   },
 });
 
