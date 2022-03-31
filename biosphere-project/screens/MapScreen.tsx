@@ -58,8 +58,6 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
   const [isInfo, setIsInfo] = useState(false);
   const [article, setArticle] = useState({});
 
-  console.log(article.tags);
-
   let [fontsLoaded] = useFonts({
     RobotoCondensed_400Regular,
     RobotoCondensed_700Bold,
@@ -236,15 +234,7 @@ const MainMap: React.FC<MapProps> = ({ route, navigation }) => {
                 Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line
                 in section 1.10.32.
               </Text>
-              <Text
-                style={{
-                  color: 'white',
-                  fontFamily: 'RobotoCondensed_400Regular',
-                  marginLeft: 10,
-                }}
-              >
-                Tags:{' '}
-              </Text>
+
               <View style={styles.tags}>
                 {article.tags.map((tag) => {
                   return (
@@ -344,7 +334,6 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   articleScroll: {
-    // alignSelf: "flex-end",
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height * 0.55,
     backgroundColor: '#F9F8F8',
